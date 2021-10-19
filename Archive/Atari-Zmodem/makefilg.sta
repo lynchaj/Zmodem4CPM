@@ -1,0 +1,35 @@
+#
+# Makefile for Gnu C for standalone versions of RZ and SZ
+#	Gnu C version 1.35 or better required.
+#	Edit config.h before make'ing
+#
+#	Jwahar Bammi
+#
+#
+SRC = common.c rz.c sz.c util.c tyme.c zm.c fileio.c
+RZOBJ = common.o rz.o util.o tyme.o zm.o fileio.o
+SZOBJ = common.o sz.o util.o tyme.o zm.o fileio.o
+
+CC = cgcc
+CFLAGS = -O -DSTANDALONE -mshort -fomit-frame-pointer -fcombine-regs -fstrength-reduce
+LDFLAGS = -s -mshort -liio16
+
+ALL = rz.ttp sz.ttp
+
+all: $(ALL)
+
+rz.ttp : $(RZOBJ)
+	$(CC) -o rz.ttp $(RZOBJ) $(LDFLAGS)
+
+$(RZOBJ) : common.h zmdm.h decl.h config.h
+
+sz.ttp : $(SZOBJ)
+	$(CC) -o sz.ttp $(SZOBJ) $(LDFLAGS)
+
+$(SZOBJ) : common.h zmdm.h decl.h config.h
+
+clean:
+	rm -f *.o
+
+realclean: clean
+	rm -f $(ALL) report core

@@ -1,0 +1,34 @@
+#
+# Makefile for Alcyon C (version 4.14 required)
+#	for use with PD MAKE distributed by us.
+#
+#	Fix paths below for your set up
+#		c:\include\	Path to include files
+#		c:\lib\		Path to C library files
+#
+#	Edit config.h
+#	
+#	Please use a decent version of gemstart.s that gives some
+#	breathing room to malloc()
+#
+#	Jwahar Bammi
+
+SRC = common.c rz.c sz.c transfer.c util.c main.c tyme.c zm.c fileio.c dummy.c \
+phone.c
+
+OBJ = common.o rz.o sz.o transfer.o util.o main.o tyme.o zm.o fileio.o dummy.o \
+phone.o
+
+INCLUDE = c:\include
+LIB = c:\lib
+CPFLAGS = -i $(INCLUDE)\ -DDECL
+LINKER = c:\bin\aln.prg
+
+zmdm.prg : $(OBJ)
+	$(LINKER) -o zmdm.prg -c lnk
+
+$(OBJ) : common.h zmdm.h decl.h config.h
+transfer.o : expandar.c
+
+clean:
+	$(RM) *.o *.68k

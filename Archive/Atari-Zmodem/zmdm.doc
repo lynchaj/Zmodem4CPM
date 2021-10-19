@@ -1,0 +1,860 @@
+	zmdm.doc, v1.8 ++jrb
+
+			    ACKNOWLEDGEMENTS
+
+	ZMDM was derived from rz/sz for Unix  posted by 
+	Chuck Forsberg (...!tektronix!reed!omen!caf ). We
+	thank him for his excellent code, and for giving
+	us permission to use and distribute his code and
+	documentation.
+
+	The code for detecting baud rate at startup is courtesy
+	of Brian Katzung (katzung@laidbak.UUCP). Thanks very
+	much!
+
+	Andy Nicola did a lot of testing of the new features.
+	Thank You very much!
+
+	Thanks to the many users on the net who wrote in.
+
+	Thanks to Howard Chu (hyc@math.lsa.umich.edu) for his diffs
+	for overscan support and flow control option.
+
+	Thanks to Bill Silvert (silvert@cs.dal.ca) and users of his
+	board for their enthusiastic support, and for testing various
+	buggy versions.
+
+	It is possible to run @38.4K or higher baud rates, the changes
+	for this are simple. however, not all ST's run reliably at those
+	rates, so i left those options out.
+
+	The phones module is totally compatible with our earlier program
+	xmdm, so phone directories created with xmdm can be used with zmdm.
+
+----------------------------------------------------------------------------
+	Enhancements since V1.8
+		o added duplex toggle to menu.
+		o cleanup the proto. now works fine with GEnies zmodem
+		  download option.
+
+	Enhancements since V1.7
+		o changes send CPS reporting. send report a block as
+		  it begins to transmit it now. the cps includes read time
+		  but not the write time of the receiver (so the two should
+		  never be the same).
+		o quickly tried receive with GEnie and CompuServe
+		o fixed up sz binary mode. (thanks lars!)
+		o Complete protocol overhaul: brought it upto the latest
+		  version i could find (05/25 version of unix rzsz). Now
+		  supports RLE.
+		o fixed up Txwindow. i had broken it horribly,
+		o pulled out obuf support. it just caused problems, did
+		  not gain anything at all. (the real gain comes from
+		  sz streaming, and not by increasing the rs232 output
+		  queue buffer size).
+		o only tested with gcc v1.37.1 (i dont intend to test the
+		  others as i dont have them loaded on my HD anymore (and
+		  i refuse to run off floppies!). however i was careful
+		  not to break anything, but one never knows! As noted
+		  below Alcyon is not supported any more).
+
+	Enhancements since V1.68
+		o Alcyon C is no longer supported, nor is the old (V1.X)
+		  Dlibs.
+		o Fixed up send not streaming. This was mainly due to
+		  incorrect coding of Rxbuflen and related parameters
+		  in sz.c.
+		o Cleaned up the code a bit.
+		o Protocol update to track Chuck F.'s changes in unix rzsz.
+		o merged Howard Chu's diffs for Overscan support
+		  (not tested: #define OVERSCAN in config.h for support).
+		o merged Howards flow control diff. #define FLOW_CTRL
+		  in config.h for flow control support.
+		o merged Howards HIBAUD diffs. I cant get this to work properly.
+
+		  Big thanks for Howard for his efforts!
+
+	Enhancements since V1.67
+		o CPS reporting has changed. cps now is the effective
+		  cps, on receive it includes the time to write the file.
+		  on send it is the file send time (including read time).
+		  note: on send the effective cps can be higher than the
+		  baud rate can possible send. this discrepancy is because
+		  of buffering. Also note, with some cpu accelarators in
+		  this seems to come out to be a totally wild # (for
+		  example i have seen this with early versions of
+		  JRI's jato board )
+		o increased send buffer size
+		o minor bug fixes
+
+	Enhancements since V1.64
+		o Updated protocol
+		o fixed some long/short int problems (due to strlen being
+		  size_t for gcc lib)
+		o cursor is not turned on automatically. if you are running
+		  this from the desktop and want the cursor turned on,
+		  name the executable files with .tos or .ttp extensions.
+	        o hi-rez toggle is preserved (ie: if you changed it
+	          within zmdm, it is restored on exit).
+		  Note: autowrap, and screen color inversion are not
+		  preserved on purpose. if you want to change that
+		  just look in main.c.
+
+		o Bug: still does not understand the concept of
+		  daylight saving time, so the St files will be
+		  an hour behind when downloaded.
+		  (also note: there are some versions of this program
+		   munged by someone else, floating around on various BBS
+		   that totaly screw up date/time/protection. Settle only
+		   for the origonal!)
+		o Newer versions of TurboSt seem to live well with
+		  the 50 line mode. QuickSt also seems to be fine.
+
+	Enhancements since V1.64:
+		o accept an optional command line arguement for
+		  default phone directory file name. If not found
+		  or is not specified, then it looks for the 
+		  environment variable "PHONE". If found it will
+		  use it, otherwise the first time it tries to
+		  use a phone directory, it'll prompt for a filename.
+		o Stderr now should go to screen. This fix is in the
+		  gnu library and not in zmdm per se. (this also
+		  will enable people to run the standalone programs
+		  from flash etc). This program is supposedly incompatible
+		  with Shadow. I dont have shadow, so i dont know what the
+		  incompatibilities are, however this program uses standard
+		  Tos calls for everything, and works under all versions
+		  of Tos, so i suspect the problem is with Shadow.
+		o check in under RCS (internal change).
+
+	Enhancements since V1.62:  (last Usenet release).
+
+		o Now looks for environment variable "PHONE"
+		  for default phone directory file name. If
+		  found it will be opened.
+
+		o Gnu C compiler added. Requires V1.35 or better.
+
+	Enhancements since V1.2:
+	
+		o Some cleanup, moved common things around.
+		  Some cosmetic additions.
+
+		o MWC 3.0 compatible. The sample MW makefiles
+		  reflect the setup required for MWC  V 3.0.6.
+
+		o Manx Aztec C compatible. Tested with V 3.6a
+		  of the compiler. Produces the smallest code
+		  of all the compilers tested. See config.h,
+		  makefile.man and makefman.sta.
+		  CAUTION: for MegaST and 4Meg ST owners--
+		    The Manx Version will not work correctly
+		  for you due to a bug in the start up file
+		  -- we are still trying to figure out exactly
+		  what the problem is!
+
+		o Auto Baud Rate detection on startup:
+		  Previously ZMDM would set the baud rate
+		  to a compile time configurable rate on
+		  startup (it needed to know the baud rate
+		  to determine its default packet size). Thanks
+		  to code contributed by Brian Katzung, now it
+		  detects the baud rate on startup.
+		  Of course you can set the baud rate
+		  within ZMDM (by hitting '<HELP>'  'b' ).
+
+		o Compile time option to use all available memory
+		  as recv/send buffer. See DYNABUF, LEAVEALONE and
+		  MINACC preprocessor symbols in config.h. If you
+		  prefer to use a fixed size buffer, this is still
+		  possible by not #define'ing DYNABUF and setting
+		  BBUFSIZ. MegaST OK - thanks Andy Nicola.
+
+		o Stand Alone versions of RZ and SZ can be made
+		  by compiling the sources with the preprocessor
+		  symbols 'STANDALONE' #define'ed. See the makefile
+		  'MAKEFILE.STA' for more details.
+		  Stand Alone versions DO NOT do any command line
+		  argument expansions for wild cards or directories
+		  (unlike the integrated ZMDM).
+		  Stand Alone versions tested from within Gulam,
+		  Flash and Intersect. Thanks to Andy Nicola for
+		  testing these features.
+
+		o Remote versions of ZMDM, RZ and SZ can be made by
+		  compiling the sources with the preprocessor symbol
+		  'REMOTE' #define'ed. A remote version listens and
+		  does all its I/O thru the serial port. Of course
+		  it has to be fired up from console. One of our
+		  area BBS's provides this as a D/L option, where
+		  the BBS program execs a remote ZMDM, and one you exit
+		  you return back to the BBS program.
+
+	        o Added -B (note: uppercase B) option to both RZ and SZ.
+		  the -B function is a binary mode override, that disregards
+		  the extension when deciding the transfer mode. This is
+		  useful when say you are backing up your whole disk
+		  to say a Unix host. (backup the exact image of the files),
+		  or doing St-to-St type transfers.
+		
+		o Now compatible with the PD DLIB library. The
+		  pre-processor symbol DLIBS must be defined. Only
+		  tested with the Alcyon version of the library.
+
+		o Added the phone module (a simple dialer with a
+		  telephone numbers directory). This module is
+		  only compiled in if the preprocessor symbol
+		  'PHONES' is #define'ed. For those of you who
+		  are familiar with XMDM, this module was directly
+		  ripped out of there, with a small bug fix that
+		  prevented it from running under TurboSt.ACC.
+
+		o Long packet lengths now allowed at slower baud rates
+		  rather than insisting on using the default as the max
+		  packet length. For instance
+			sz -l 1024 files..
+		  will now send 1024 byte packets at low baud rates (<= 2400).
+		  The corresponding change has been made to the unix
+		  end of the software too.
+
+		o TurboSt.ACC note:
+			The high rez toggle (25/50 lines) on a
+		monochrome monitor will NOT work is TurboSt.ACC is
+		installed. The problem is on the TurboSt.ACC end. Using
+		the high rez toggle does'nt cause any ill-effect, it just
+		does not do anything.
+		  
+	Enhancements since V1.0:
+		o (This enhancement is only present when
+		   you compile with the pre-processor symbol
+		   `RECURSE' defined - see the makefile's)
+		  sz now takes a  directory as an argument.
+		  If the name of a directory is given as an
+		  argument, then the contents of that directory
+		  and all its subdirectories are sent. A new
+		  option to sz is '-P <dir or file>'
+		  (capital 'P' not 'p'), that
+		  'prunes' the expansion of a directory. For
+		  example if you wanted to send all the files
+		  in the 'C' partition of your hard disk, except
+		  the 'tmp', 'usr' and 'foo\bar' subdirectories, you would
+		  issue the following command in the transfer
+		  shell:
+
+		     sz -f -P c:\tmp -P c:\usr -P c:\foo\bar c:\
+
+		  Notice that you may specify multiple -P 'rune
+		  options. The argument to the -P option may also be
+		  the name of a file that you want to prune off.
+		  Also note that to send full path names
+		  to the remote end, the '-f' option is required,
+		  otherwise the remote end will create all the
+		  files in its current working directory. (Also
+		  see CWRU extension to Unix 'rz', where 'rz' when
+		  receiving full path names (ie. when you specify the
+		  '-f' option to sz on the ST end) will create all
+		  subdirectories required to receive the file). The
+		  ST 'rz' always creates all subdirectories required
+		  to receive a path when the other end is sz'ing with
+		  the '-f' option. Also note that in both the rz's
+		  all subdirectories are created relative to the 
+		  current working directory, even though the path may
+		  specify an absolute path.
+
+	        o File name mapping is slightly changed from V1.0.
+		  When receiving a filename that has multiple '.'s
+		  all but the last '.' is replace with an '_'. So
+		  'foo.bar.ext' becomes 'foo_bar.ext'. Similarly
+		  '123.456.789\aaa.bbb.ccc' becomes '123_456.789\aaa_bbb.ccc'.
+		  As in V1.0, the filename and extension (of each
+		  component of a path name) are truncated to 8 and 3
+		  characters respectively. So '123.456789.ext\foobarbaz'
+		  becomes '123_4567.ext\foobarba'. Also note that
+		  while sending, '\'s are sent as '/'s. The ST drive
+		  specifier part of a path name is never sent.
+		  So 'c:\file.ext' is sent as '/file.ext' (remember:
+		  that full pathnames are only sent when the '-f'
+		  option is specified to 'sz').
+
+		o Many bug fixes since V1.0!
+
+----------------------------------------------------------------------------
+
+
+	Zmdm consists of two main components:
+		o The terminal emulator
+		o The transfer shell
+
+	- The terminal emulator emulates a 80*25 terminal
+	(or optionally the 80*50 mode on Mono systems only).
+	It uses the escape codes of the bios built in enhanced
+	vt52 emulator. For UN*X users i have included the
+	termcap entry that we use.
+
+	- The transfer shell lets you send/receive files using
+	Xmodem/Xmodem-CRC/Xmodem-1K/Ymodem or Zmodem protocols.
+        In addition it provides UN*X csh like command for your
+	convenience, and does (TOS style) wild-card handling,
+        and (only single) quoting of arguments. Please note that
+	this is a convenience feature, and in no way does it
+	pretend to be compatible with csh or any other shell.
+	See the accompanying file YMODEM.DOC by Chuck Forsberg,
+	for details of the above transfer protocols.
+
+	This note describes the commands available from the
+	"transfer shell". The transfer shell is the built in command line
+	interface. In case you are wondering why we choose to
+	use a command line interface, the answer is quite simple.
+	The functions available have so many options and combinations
+	thereof, that it would be totally impractical if not impossible
+	to put them in menus/dialogues (each menu will have to be at least
+	3 levels deep). Of course it is much easier to type something
+	like 'sz -l 128 -L 128 *.c' than answering the at least three
+	dialogues required to pick up the same info. You enter the
+	transfer shell from the terminal emulator by hitting <HELP>
+	and choosing 'T' from the main menu. Once you are done using the
+	transfer shell, you simply hit <RETURN> to pop back into the terminal
+	emulator, exactly where you left off.
+
+	This program was written primarily for situations where you
+	are connected to remote hosts either directly or via modems.
+	The timing and error parameters are NOT suitable for hosts
+	such as CompuServe etc, where there may large delays or your
+	phone line is noisy. We distributed a program called XMDM earlier
+	that is very tolerant of delays/noisy lines and has been used
+	very successfully for BBS'ing around the country. XMDM has
+	conveniences such as dialing directories etc for that purpose.
+	If you have a old version of XMDM ( < V1.8) that does not have
+	dialing directories etc, please mail me for a new copy.
+
+	ZMDM has been tested in the following ways:
+	1) Between two ST's running ZMDM. 19200 Baud no problem!
+	2) With unix sz/rz running on a BSD4.3 on Vaxen.
+	3) With unix sz/rz running on Apollo Dn330/Dn300 under Aegis and
+	   Domain IX (over a siologin line).
+	4) With unix sz/rz running on a Sun under SunOS.
+	6) With an Ibm At running Procomm using Ymodem/Xmodem.
+	7) With ForemSt bbs, with the BBS sending in Ymodem batch
+	   mode. (note: ForemSt bbs's do not take batch uploads -
+	   Matt Singer are you listening??)
+
+	8) With a Mac running MicroPhone using Ymodem mode.
+	9) With an Intel 210 box running Xenix (yech!).
+		
+	UNIX users please note:
+		If the load on your system is high, the UNIX tty
+	driver drops characters when receiving at 9600 or higher baud rates.
+	There are two ways around this problem:
+	- use shorter packet and frame lengths using the `-l' and `-L' options
+	of SZ. For examples `sz -l 128 -L 128 files...' work most of
+	the time at 9600/19200 baud without any problem.
+
+	- reduce your baud rate to 4800 baud. Normally the first solution
+	works fine, but if you have an extraordinarily loaded machine
+	(or are running on a brain damaged 750 with DZ11's), then 4800 baud
+	works better.
+	
+	- Those who have 3b2 boat anchors, the tty driver (at least on
+	 the boxes we have) is totally useless over 1200 baud.
+
+	-----
+	
+
+NAME
+     rb, rz - XMODEM, YMODEM, ZMODEM (Batch) file receive
+
+SYNOPSIS
+     rz	[-Bepqtvw]
+     rb	[-pqtv]
+     rz	[-cqtv] file
+
+
+DESCRIPTION
+     This program uses error correcting	protocol to receive files
+     over a serial port	from a variety of programs running under
+     TOS, PC-DOS, CP/M, Unix, and other operating systems.
+
+     The first form of rz (Receive ZMODEM) receives files with
+     the ZMODEM	batch protocol.	 If the	sending	program	does not
+     support ZMODEM, rz	steps down to YMODEM protocol after 50
+     seconds.  This delay can be eliminated by calling the pro-
+     gram as rb	.
+
+     When receiving with XMODEM	or YMODEM, Rz accepts either
+     standard 128 byte sectors or 1024 byte sectors (YAM -k
+     option).  The user	should determine when the longer block
+     length actually improves throughput without causing prob-
+     lems.
+
+     If	extended file information (file	length,	etc.) is
+     received, the file	length controls	the number of bytes writ-
+     ten to the	output dataset (YMODEM only), and the modify time
+     and file mode (iff	non zero) are set accordingly. A special feature
+     of the ST implementation is that if the remote end sends
+     full path names (-f option of sz) all required directories
+     will be automatically created on the ST end. The directories
+     will be rooted at the current directory and not at the root level.
+
+     The second	form of	rz receives a single file with XMODEM
+     protocol.	The user must supply the file name to both send-
+     ing and receiving programs.
+
+     When rz is invoked, Verbose is set to 2, causing frame by
+     frame progress reports to stderr.  This may be disabled with
+     the q option.
+
+
+     The meanings of the available options are:
+     
+     B	  (ZMODEM) force all files to be received in binary mode.
+	  Useful for ST-to-ST transfers (for Ascii files where
+	  you don't want LF to CRLF conversion). This is
+	  a local override, specifying `-B' overrides any mode
+	  the sender specifies (it however will still honor any `protect'
+	  or `append' requests from the sender)
+	  (Applicable to ZMODEM transfers only).
+
+     c	  Request 16 bit CRC.  XMODEM file transfers default to	8
+	  bit checksum.	 YMODEM	and ZMODEM normally use	16 bit
+	  CRC.
+
+     p	  (ZMODEM) Protect: skip file if destination file exists.
+
+     q	  Quiet	suppresses verbosity.
+
+     t tim
+	  Change timeout to tim	tenths of seconds.
+
+     v	  Verbose, more v's give more verbose. Info is also
+	  appended to logfile 'rzlog' .	More v's generate more output.
+
+     e	Escape control characters (Z)
+
+     w	N Window is N bytes (Z) -- control receive window size
+
+ZMODEM CAPABILITIES
+     Rz	supports incoming ZMODEM binary	(-b), ASCII (-a), protect
+     (-p), and append (-+) requests, and ZMODEM	command	execu-
+     tion. The incoming mode may be optionally overriden by specifying
+     the `-B' option to Rz, in which case all files will be received
+     in binary mode regardless of the incoming mode (protect and append will
+     still be obeyed). 
+
+     Rz also supports incoming pathnames, and will recursively
+     create all subdirectories as required. Rz preserve file mod
+     times, and file protection. The translation of Unix protection
+     bits to ST file attributes is based on the Unix owner (07XX)
+     protection bits.  Presently, only read and write bits are considered.
+     All received pathnames are considered to be rooted at the 
+     current working directory. Any leading '/' from unix systems
+     is discarded (ie. all incoming pathnames are considered unrooted,
+     and are locally 'planted' at the current working directory).
+     Ascii/Binary file modes are determined by examining the file
+     extension on the incoming path name. If the extension is one
+     of the following (case independent), then it is assumed to be
+     a binary file, ascii other wise. The ascii translation of 
+     '\n' to '\r\n' is done locally for ZMODEM (only).
+     For X or Y modem the sender determines the file type (see
+     the file 'common.c' for the latest list).
+
+	".PRG", ".TOS", ".TTP", ".ARC", ".ACC", ".IMG", ".RSC", ".O",
+        ".OBJ", ".NEO", ".PIC", ".PI1", ".PI2", ".PI3", ".PQ1", ".PQ2",
+        ".PQ3", ".BRD", ".ANI", ".STW", ".FNT", ".PRT", ".SNG", ".NEC",
+        ".CNF", ".Z"  , ".DFN", ".GEM", ".EZD", ".LNK", ".SYM", ".LZH",
+        ".PIX", ".X32", ".OUT", ".A",   ".CCC", ".CL",  ".CMD", ".COM",
+        ".CRL", ".DAT", ".DIR", ".EXE", ".OVL", ".PAG", ".REL", ".SAV",
+        ".SUB", ".SWP", ".SYS", ".TAR", ".UTL", ".IM",  ".PAK", ".ZOO"
+
+
+
+RZ/SZ(1)		      ST Programmer's Manual		    RZ/SZ(1)
+
+NAME
+     sz
+
+SYNOPSIS
+     sz	[-+BdefkLlNnopqtuwvy][-P <directory or file>]*  file ...
+     sz	-X [-kqtuv] file
+     sz	[-oqtv] -c COMMAND
+     sz	[-oqtv] -i COMMAND
+
+DESCRIPTION
+     Sz	uses the ZMODEM, YMODEM	or XMODEM error	correcting proto-
+     col to send one or	more files over	a serial port to a
+     variety of	programs running under PC-DOS, CP/M, Unix, VMS, TOS
+     and other operating systems.
+
+
+     The first form of sz sends	one or more files with ZMODEM or
+     YMODEM batch protocol.  Normally, only the	file name part of
+     the pathname is transmitted. Additional
+     information about the file	is transmitted.	 If the	receiving
+     program uses this information, the	transmitted file length
+     controls the exact	number of bytes	written	to the output
+     dataset, and the modify time and file mode	are set	accord-
+     ingly.
+
+     The second	form of	sz uses	the -X flag to send a single file
+     with XMODEM or XMODEM-1k protocol.	 The user must supply the
+     file name to both sending and receiving programs.
+
+
+     The third form sends a single COMMAND to the receiver for
+     execution.	 Sz exits with the COMMAND return value.
+
+
+     The fourth	form sends a single COMMAND to the receiver for
+     execution.	 Sz exits as soon as the receiver has correctly
+     received the command, before it is	executed.
+
+
+     In SZ Verbose is set to 2, causing frame by frame pro-
+     gress reports to stderr.  This may	be disabled with the q
+     option.
+
+     The meanings of the available options are:
+
+     +	  Instruct the receiver	to append transmitted data to an
+	  existing file	(ZMODEM	only).
+
+     B	  (ZMODEM) force all files to be sent in binary mode.
+	  Useful for ST-to-ST transfers (for Ascii files where
+	  you don't want LF to CRLF conversion).
+	  (Applicable to ZMODEM transfers only).
+
+     c COMMAND
+	  Send COMMAND to the receiver for execution, return with
+	  COMMAND's exit status.
+
+     d	  Change all instances of "." to "/" in	the transmitted
+	  pathname.  Thus, C.omenB0000 (which is unacceptable to
+	  MSDOS	or CP/M) is transmitted	as C/omenB0000.	 If the
+	  resultant filename has more than 8 characters	in the
+	  stem,	a "." is inserted to allow a total of eleven.
+
+     e	  Escape all control characters; normally XON, XOFF, CR-
+	  @-CR,	and Ctrl-X are escaped.
+
+     f	  Send Full pathname.  Normally	directory prefixes are
+	  stripped from	the transmitted	filename.
+
+     i COMMAND
+	  Send COMMAND to the receiver for execution, return
+	  Immediately upon the receiving program's successful
+	  reception of the command.
+
+     k	  (XMODEM/YMODEM) Send files using 1024	byte blocks
+	  rather than the default 128 byte blocks.  1024 byte
+	  packets speed	file transfers at high bit rates.  (ZMO-
+	  DEM streams the data for the best possible throughput.)
+
+     L N  Use ZMODEM sub-packets of length N.  A larger	N (32 <=
+	  N <= 1024) gives slightly higher throughput, a smaller
+	  N speeds error recovery.  The	default	is 128 below 300
+	  baud,	256 above 300 baud, or 1024 above 2400 baud.
+
+     l N  Wait for the receiver	to acknowledge correct data every
+	  N (32	<= N <=	1024) characters.  This	may be used to
+	  avoid	network	overrun	when XOFF flow control is lack-
+	  ing.
+
+     n	  (ZMODEM) Send	each file if destination file does not
+	  exist.  Overwrite destination	file if	source file is
+	  newer	or longer than the destination file.
+
+     N	  (ZMODEM) Send	each file if destination file does not
+	  exist.  Overwrite destination	file if	source file has
+	  different length or date.
+
+     o	  (ZMODEM) Disable automatic selection of 32 bit CRC.
+
+     p	  (ZMODEM) Protect existing destination	files by skipping
+	  transfer if the destination file exists.
+
+     q	  Quiet	suppresses verbosity.
+
+     r	  Resume interrupted file transfer.  If	the source file
+	  is longer than the destination file, the transfer com-
+	  mences at the	offset in the source file that equals the
+	  length of the	destination file.
+
+     t tim
+	  Change timeout to tim	tenths of seconds.
+
+     u	  Unlink the file after	successful transmission.
+
+     v	  Verbose causes a list	of file	names to be appended to
+	  szlog .	More v's generate more output.
+
+     X	  Send a single	file with XMODEM or XMODEM-1k protocol.
+
+     y	  Instruct a ZMODEM receiving program to overwrite any
+	  existing file	with the same name.
+
+     w	  N restrict transmit window size to N.
+ 
+     z,Z  Use ZMODEM file compression to speed file transfer.
+	  (this is done only if the receiver understands too, rz does!)
+
+     P <directory or file>
+	(ZMODEM) Sz may be given the name of
+	a directory, in which case it will send the contents
+	of the directory, and all the subdirectories thereof.
+	The -P 'Prune' option is used to prune out the named directory
+	or file while expanding the directory tree. Multiple
+	-P options may be specified. This option
+	is only present when the source is compiled with the
+	pre-processor symbol `RECURSE' defined.
+
+	SZ guesses the file mode by examining the filename extension as
+	discusses under RZ above. SZ -f send full pathnames with '\'
+	converted to '/'. The ST drive specifier is never sent.
+
+SEE ALSO
+     ZMODEM.DOC, YMODEM.DOC, IMP(CP/M),	cu(1), Professional-YAM
+     manual, sz(omen), usq(omen), undos(omen)
+
+     Compile time options required for various operating systems
+     are described in the source file.
+
+NOTES
+    Depending on your file structure, when using the recursively
+    descend a directory option of Sz, ZMDM can demand a lot of
+    dynamic memory. When the pre-processor symbol `RECURSE' is
+    defined, for Mark Williams C, `_stksize' is set to 16K. If
+    you are using Alcyon C, please use a decent version of
+    GEMSTART.S. We use the version from pratt@atari with
+    memory model (STACK=1), which gives quarter of available
+    memory to stack+heap. Note that all the dynamic memory is
+    taken off the program heap (for Alcyon, and off the Arena
+    above the stack for Mark Wiliams), ie. ZMDM uses `malloc' not
+    `Malloc'.
+
+    It is possible to run out of dynamic memory when descending
+    a file structure with a lot of files and/or deep-hierarchies.
+    The simplest way to work around this problem is to do the
+    sending in parts by using the -P rune option of Sz. For
+    instance if you run out of memory while trying to send your
+    C partition, you may want to prune out some directories and
+    send things in parts. In my case i backup my C partition to
+    our unix host in the following manner:
+
+	sz -f -P c:\bin -P c:\lib c:\  /* send eveything in the C
+				        partition except the 'bin'
+				        and 'lib' subdirectories */
+
+	sz -f c:\bin c:\lib	      /* then send the 'bin' and 'lib'
+				        directories */
+
+    The second solution depends on if you are using Mark Williams
+    or Alcyon C libraries. If you are running out of memory because
+    of deep hierarchies, you need to increase the stack. If you are
+    running out of memory because of a lot of files, then you
+    need to decrease the stack to allow for a larger arena in
+    the case of MWC (and trade-off for depth), or in the case of
+    Alcyon you need to increase stack+heap. On systems with a
+    large Ramdisk or many ACCs make sure you have enough space
+     before doing this.
+
+    The TTY input buffering on	some systems may not allow long
+    blocks or streaming input,	especially at high baud	rates.
+    The Pro-YAM zmodem	l numeric parameter may	be set to a value
+    between 64	and 1024 to limit the burst length.
+
+BUGS
+     THIS SOFTWARE IS STILL UNDER DEVELOPMENT AND ALMOST POSITIVELY
+     CONTAINS BUGS. PLEASE REPORT ALL SUCH CRITTERS TO dsrgsun!bammi.
+
+     Pathnames are restricted to 127 characters.  In XMODEM sin-
+     gle file mode, the	pathname given on the command line is
+     still processed as	described above.
+
+FILES
+
+     (rz|sz)log	stores debugging output	generated with -vvv[v]*
+	        option.
+
+OTHER COMMANDS
+	The following command are available in the
+	transfer shell:
+
+	<regular-expression> ::= <file name> | <wild card> |
+				 'quoted string'
+	NB: A quoted string cannot contain embedded single quotes. There
+	    are no escape character available in a quoted string.
+
+	rm,   remove files
+		rm [-i] <regular expression>
+		-i ::= interactive mode, you are prompted before
+		       file(s) are removed.
+
+	cp,   copy files
+		cp <many files> directory
+			copy all files into directory
+			cp *.c d:\foo - copy all C files into foo 
+				        directory on drive D:
+		cp <file> <directory>
+			copy file to directory\file.
+
+		cp <file> <file>
+			file to file copy
+			'cp file con:' to get the listing of a file.
+
+	ls,   list directory
+		ls [wild card]
+		ls without an argument will list all files in the
+		current directory. If an argument is given, then
+		only files matching the wild card will be listed.
+			ls *.c - list all C files in current directory
+			ls d:\foo - list all files in foo directory on D:
+			ls d:\foo\*.c - list all C files in foo directory
+
+	cd,   change working directory
+		cd directory
+
+	md,   make a directory
+		md directory
+
+	rd,   remove a directory
+		rd directory
+		Due to a Gemdos bug, you may have to say 'rd directory'
+		twice to get rid of directory. This happens when you
+		try to remove a directory that you have never visited.
+
+	pwd,  print  working directory
+		prints the current working directory
+
+	df,   check free space
+		df [device]
+		df without an argument will show free space on current drive.
+		df with an argument will show free space on specified drive.
+
+TERMCAP
+	Termcap entries that may be used for the terminal emulator.
+
+st|520st|atariST|520 or 1040, bw, std sys font, 25 lines, 80 col:\
+	:ae=\Eba:al=\EL:am:as=\Ebc:\
+	:bl=^G:bs:\
+	:cd=\EJ:ce=\EK:cl=\EH\EJ:cm=\EY%+ %+ :co#80:cr=^M:\
+	:dl=99\EM:do=\EB:\
+	:ho=\EH:\
+	:is=\Ev\Ee:\
+	:kd=\274:kh=\216:kl=\275:kr=\276:ku=\273:\
+	:le=^H:li#25:\
+	:nd=\EC:nl=^J:\
+	:pt:\
+	:se=\Eq:so=\Ep:sr=\EI:\
+	:ta=^I:\
+	:up=\EA:
+
+
+ST|ST25|atariSTcolor|as above but with color for standout :\
+	:ae=\Eba:al=\EL:am:as=\Ebc:\
+	:bl=^G:bs:\
+	:cm=\EY%+ %+ :co#80:li#25:cr=^M:cd=\EJ:ce=\EK:cl=\EH\EJ:\
+	:dl=99\EM:do=^J:\
+	:ho=\EH:\
+	:is=\Ev\Ee:\
+	:kd=\274:kh=\216:kl=\275:kr=\276:ku=\273:\
+	:le=^H:\
+	:nd=\EC:nl=^J:\
+	:pt:\
+	:so=\Ec2\Eb3:se=\Ec0\Eb3:sr:\EI:\
+	:ta=^I:\
+	:up=\EA:
+
+sT|st50|AtariST emulating vt52, bw, 50 lines, 80 col:\
+	:ae=\Eba:al=\EL:am:as=\Ebc:\
+	:bl=^G:bs:\
+	:cd=\EJ:ce=\EK:cl=\EH\EJ:cm=\EY%+ %+ :co#80:cr=^M:\
+	:dl=99\EM:do=^J:\
+	:ho=\EH:\
+	:is=\Ev\Ee:\
+	:kd=\274:kh=\216:kl=\275:kr=\276:ku=\273:\
+	:le=^H:li#50:\
+	:nd=\EC:nl=^J:\
+	:pt:\
+	:se=\Eq:so=\Ep:sr=\EI:\
+	:ta=^I:\
+	:up=\EA:
+
+St|520stf|atariST|520 or 1040, bw, std sys font, for fast lines:\
+	:ae=\Eba:am:as=\Ebc:\
+	:bl=^G:bs:\
+	:cd=\EJ:ce=\EK:cl=\EH\EJ:cm=\EY%+ %+ :co#80:cr=^M:\
+	:do=\EB:\
+	:ho=\EH:\
+	:is=\Ev\Ee:\
+	:kd=\274:kh=\216:kl=\275:kr=\276:ku=\273:\
+	:le=^H:li#25:\
+	:nd=\EC:nl=^J:\
+	:pt:\
+	:se=\Eq:so=\Ep:sr=\EI:\
+	:ta=^I:\
+	:up=\EA:
+
+COMPILING
+
+	The source provided with this distribution will compile
+	with either ALCYON C V4.14 as distributed with the 
+	Atari Development System,  with Mark Williams C Version 2.00
+	or later, with MANX Aztec C (V3.6a tested) or with Gnu C (v1.35
+	or later).
+	(please note that the system will NOT compile with earlier
+	 versions of either compiler.)
+
+	Edit config.h.
+
+	If you are using Alcyon(and ALN for the linker), check paths in LNK
+
+	Define the preprocessor symbol `RECURSE' if you
+	want the sz to accept directory names(and send its
+	contents), and for the -P option.
+
+	To compile with Gnu C see `makefile.gcc' and `makefilg.sta'
+	To compile with Alcyon see the file `makefile.alc'
+	To compile with Mark Williams C see the file `makefile'
+	To compile with Manx Aztec C see the file `makefile.man'
+
+	Rename ZMDM.PRG to ZMDM.TOS if you so desire.
+
+MORE ALCYON NOTES:
+	-- Some people seem to have a bad version of as68 with Alcyon,
+	 that does'nt handle static variables too well (ie. symbols of the
+	 form "`name" in the assembler). Please make sure yours is not one of
+	 these.
+
+	-- Use a reasonable version of gemstart.s - ie. one which gives you
+	 a decent amount of stack+heap space. One of the nicer versions
+	 floating around is the one written by Alan Pratt @atari, that
+	 gives you the various memory model options, and corrects the
+	 bug with the bdos call as suggested by Robert Royar on this net.
+
+	-- Do NOT use the `fix' distributed on CompuServe developers forum
+	in the file WILDFI.ARC (in Dl7). This fix does'nt fix anything,
+	it breaks everything!
+
+KNOWN BUGS
+
+	If a receive is cancelled/aborted, the receive file
+	buffer is not flushed to the file. Personally, i
+	view this as a feature rather than a bug, so it is
+	unlikely to be `fixed'.
+
+DISCLAIMER
+	This code is in public domain, and you are encouraged
+	to distribute it further. You may however not sell the
+	code, or use it for any commercial gains. The code is
+	provided as is, and we are not responsible for any
+	omissions/errors, bugs, nor do we claim correctness or
+	its fitness for any purpose.
+
+	Please forward your comments and suggestions to
+
+				Jwahar Bammi
+bang:   {any internet host}!dsrgsun.ces.CWRU.edu!bammi	jwahar r. bammi
+domain: bammi@dsrgsun.ces.CWRU.edu
+GEnie:	J.Bammi
+Compu$erve: 71515,155 or ">internet:bammi@dsrgsun.ces.cwru.edu"
+
+/* EOF */

@@ -1,0 +1,37 @@
+#
+# Makefile for Gnu C
+#	Version 1.35 (or higher) required.
+#	
+# 	Edit config.h before make'ing.
+#
+#	Jwahar Bammi
+#
+#
+
+SRC = common.c rz.c sz.c transfer.c util.c main.c tyme.c zm.c fileio.c \
+ghi5025.s phone.c
+
+OBJ =  fileio.o zm.o util.o rz.o sz.o common.o tyme.o transfer.o main.o \
+ghi5025.o phone.o
+
+CC = cgcc
+CFLAGS = -O -mshort -fomit-frame-pointer -fcombine-regs -fstrength-reduce \
+ -W
+LDFLAGS = -s -mshort -liio16
+ALL = zmdm.ttp 
+
+all : $(ALL)
+
+zmdm.ttp : $(OBJ)
+	$(CC) -O -o zmdm.ttp $(OBJ) $(LDFLAGS)
+
+$(OBJ) : common.h zmdm.h decl.h config.h proto.h
+transfer.o : expandar.c
+
+ghi5025.o : ghi5025.s
+	$(CC) -c ghi5025.s
+clean:
+	rm -f *.o
+
+realclean: clean
+	rm -f $(ALL) report core

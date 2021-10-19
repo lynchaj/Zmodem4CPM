@@ -1,0 +1,30 @@
+#
+# Makefile for Mark Williams C for standalone versions of RZ and SZ
+#	Version 2.00 required.
+#	Please ignore warnigs about a constant being promoted to long
+#	and about some unused variables.
+#
+#	Edit config.h before make'ing
+#
+#	Jwahar Bammi
+#
+#
+SRC = common.c rz.c sz.c util.c tyme.c zm.c fileio.c
+RZOBJ = common.o rz.o util.o tyme.o zm.o fileio.o
+SZOBJ = common.o sz.o util.o tyme.o zm.o fileio.o
+
+CFLAGS = -O -DSTANDALONE -DMWC=1 -V -VPEEP
+LDFLAGS = -x -s -V -VPEEP
+
+rz.prg : $(RZOBJ)
+	cc -O -o rz.prg $(RZOBJ) $(LDFLAGS)
+
+$(RZOBJ) : common.h zmdm.h decl.h config.h
+
+sz.prg : $(SZOBJ)
+	cc -O -o sz.prg $(SZOBJ) $(LDFLAGS)
+
+$(SZOBJ) : common.h zmdm.h decl.h config.h
+
+clean:
+	rm *.o

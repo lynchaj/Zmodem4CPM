@@ -1,0 +1,28 @@
+#
+# Makefile for Manx Aztec C for standalone versions of RZ and SZ
+#	Version 3.6a tested.
+#
+#	Edit config.h before make'ing
+#
+#	Jwahar Bammi
+#
+#
+SRC = common.c rz.c sz.c util.c tyme.c zm.c fileio.c
+RZOBJ = common.o rz.o util.o tyme.o zm.o fileio.o
+SZOBJ = common.o sz.o util.o tyme.o zm.o fileio.o
+
+CFLAGS = -DSTANDALONE -DMANX=1
+LDFLAGS = -V
+
+rz.prg : $(RZOBJ)
+	ln -o rz.prg $(LDFLAGS) $(RZOBJ) -Lc
+
+$(RZOBJ) : common.h zmdm.h decl.h config.h
+
+sz.prg : $(SZOBJ)
+	ln -o sz.prg $(LDFLAGS) $(SZOBJ) -Lc
+
+$(SZOBJ) : common.h zmdm.h decl.h config.h
+
+clean:
+	rm *.o

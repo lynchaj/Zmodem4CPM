@@ -1,0 +1,1680 @@
+      
+      
+      
+                                  - 1 -
+      
+      
+      
+                     XMODEM/YMODEM PROTOCOL REFERENCE
+                 A compendium of documents describing the
+      
+                            XMODEM and YMODEM
+      
+                         File Transfer Protocols
+      
+      
+      
+      
+                   This document was formatted 9-11-86.
+      
+      
+      
+      
+      
+      
+      
+                         Edited by Chuck Forsberg
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+                 Please distribute as widely as possible.
+      
+                       Questions to Chuck Forsberg
+      
+      
+      
+      
+      
+                           Omen Technology Inc
+                        17505-V Sauvie Island Road
+                          Portland Oregon 97231
+                           Voice: 503-621-3406
+            Modem (Telegodzilla): 503-621-3746 Speed 1200,300
+                          Compuserve: 70007,2304
+                    UUCP: ...!tektronix!reed!omen!caf
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+                                  - 2 -
+      
+      
+      
+      1.  ROSETTA STONE
+      
+      Here are some definitions which reflect the current vernacular
+      in the computer media. The attempt here is identify the file
+      transfer protocol rather than specific programs.
+      
+      XMODEM refers to the original 1979 file transfer etiquette
+       introduced by Ward Christensen's 1979 MODEM2 program.  It's also
+       called the MODEM or MODEM2 protocol.  Some who are unaware of MODEM7's
+       unusual batch file mode call it MODEM7.  Other aliases include "CP/M
+       Users's Group" and "TERM II FTP 3".  This protocol is supported by
+       every serious communications program because of its universality,
+       simplicity, and reasonable performance.
+      
+      XMODEM/CRC replaces XMODEM's 1 byte checksum with a two byte Cyclical
+       Redundancy Check (CRC-16), giving modern error detection
+       protection.
+      
+      XMODEM-1k Refers to the XMODEM/CRC protocol with 1024 byte data blocks.
+      
+      YMODEM refers to the XMODEM/CRC (optional 1k blocks) protocol with the
+       batch transmission described below.
+      
+      ZMODEM uses familiar XMODEM/CRC and YMODEM technology in a
+       new protocol that provides reliability, throughput, file
+       management, and user amenities appropriate to contemporary
+       data communications. 
+      
+      
+      2.  YET ANOTHER PROTOCOL?
+      
+      Since its development half a decade ago, the Ward Christensen modem
+      protocol has enabled a wide variety of computer systems to interchange
+      data.  There is hardly a communications program that doesn't at least
+      claim to support this protocol.
+      
+      Recent advances in computing, modems and networking have
+      revealed a number of weaknesses in the original protocol:
+      
+         + The short block length caused throughput to suffer when used with
+           timesharing systems, packet switched networks, satellite circuits,
+           and buffered (error correcting) modems.
+      
+         + The 8 bit arithmetic checksum and other aspects allowed line
+           impairments to interfere with dependable, accurate transfers.
+      
+         + Only one file could be sent per command.  The file name had to be
+           given twice, first to the sending program and then again to the
+           receiving program.
+      
+         + The transmitted file could accumulate as many as 127 extraneous
+           bytes.
+      
+      
+      
+      Chapter 2  
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                        3
+      
+      
+      
+         + The modification date of the file was lost.
+      
+      A number of other protocols have been developed over the
+      years, but none  have displaced XMODEM to date:
+      
+         + Lack of public domain documentation and example programs have kept
+           proprietary protocols such as MNP, Blast, and others
+           tightly bound to the fortunes of their suppliers. 
+      
+         + Complexity discourages the widespread application of BISYNC, SDLC,
+           HDLC, X.25, and X.PC protocols.
+      
+         + Performance compromises and moderate complexity have limited the
+           popularity of the Kermit protocol, which was developed to allow file
+           transfers in environments hostile to XMODEM.
+      
+      The XMODEM protocol extensions and YMODEM Batch address these
+      weaknesses while maintaining XMODEM's simplicity.
+      
+      YMODEM is supported by the public domain programs YAM (CP/M),
+      YAM(CP/M-86), YAM(CCPM-86), IMP (CP/M), KMD (CP/M), rz/sz (Unix, Xenix,
+      VMS, Berkeley Unix, Venix, Xenix, Coherent, IDRIS, Regulus).  Commerical
+      implementations include MIRROR, and Professional-YAM.[1] Communications
+      programs supporting these extensions have been in use since 1981.
+      
+      The 1k packet length (XMODEM-1k) described below may be used in
+      conjunction with YMODEM Batch Protocol, or with single file transfers
+      identical to the XMODEM/CRC protocol except for minimal
+       changes to support 1k packets.
+      
+      Another extension is simply called the g option.  It provides maximum
+      throughput when used with end to end error correcting media,
+      such as X.PC and error correcting modems, including the emerging
+      9600 bps units by Electronic Vaults and others.
+      
+      To complete this tome, Ward Christensen's original protocol document and
+      John Byrns's CRC-16 document are included for reference.
+      
+      References to the MODEM or MODEM7 protocol have been changed
+      to XMODEM to accommodate the vernacular. In Australia, it is
+      properly called the Christensen Protocol.
+      
+      
+      
+      
+      
+      
+      __________
+      
+       1. Available for IBM PC,XT,AT, Unix and Xenix
+      
+      
+      
+      
+      Chapter   2
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference         09-11-86                      4
+      
+      
+      
+      2.1  Some Messages from the Pioneer
+      
+      #: 130940 S0/Communications 25-Apr-85  18:38:47
+      Sb: my protocol
+      Fm: Ward Christensen 76703,302 (EDITED)
+      To: all
+      
+      Be aware the article[2] DID quote me correctly in terms of the
+      phrases like "not robust", etc.
+      
+      It was a quick hack I threw together, very unplanned (like
+      everything I do), to satisfy a personal need to communicate with
+      "some other" people. 
+      
+      ONLY the fact that it was done in 8/77, and that I put it in the public
+      domain immediately, made it become the standard that it is.
+      
+      I think its time for me to
+      
+      (1) document it; (people call me and say "my product is going
+          to include  it - what can I 'reference'", or "I'm writing a
+          paper on it, what do I put in the bibliography") and
+      
+      (2) propose an "incremental extension" to it, which might take
+          "exactly" the form of Chuck Forsberg's YAM protocol.  He
+           wrote YAM in C for CP/M and  put it in the public domain,
+           and wrote a batch protocol for Unix[3] called rb and sb
+           (receive batch, send batch), which was basically XMODEM with 
+          (a) a record 0 containing filename date time and size
+          (b) a 1K block size option
+          (c) CRC-16.
+      
+      He did some clever programming to detect false ACK or EOT, but basically
+      left them the same.
+      
+      People who suggest I make SIGNIFICANT changes to the protocol,
+      such as "full duplex", "multiple outstanding blocks", "multiple
+      destinations", etc etc don't understand that the incredible
+      simplicity of the protocol is one of the reasons it survived to
+      this day in as many machines and programs as it may be found in!
+      
+      Consider the PC-NET group back in '77 or so - documenting to
+      beat the band 
+      - THEY had a protocol, but it was "extremely complex", because
+        it tried to be "all things to all people" - i.e. send binary
+        files on a 7-bit system,  etc.  I was not that "benevolent". I
+        (emphasize > I < ) had an 8-bit UART,  
+      
+      
+      __________
+      
+       2. Infoworld April 29 p. 16
+      
+       3. VAX/VMS versions of these programs are also available.
+      
+      
+      
+      
+      Chapter   2
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                        5
+      
+      
+      
+      so "my protocol was an 8-bit protocol", and I would just say "sorry" to
+      people who were held back by 7-bit limitations.  ...
+      
+      Block size: Chuck Forsberg created an extension of my protocol,
+      called YAM, which is also supported via his public domain
+      programs for UNIX called rb and sb - receive batch and send
+      batch.  They cleverly send a "block 0" which contains the
+      filename, date, time, and size. Unfortunately, its UNIX style,
+      and is abit weird[4] - octal numbers, etc. BUT, it is a nice way
+      to overcome the kludgy "echo the chars of the name" introduced
+      with MODEM7. Further, chuck uses CRC-16 and optional 1K blocks.
+      Thus the record 0, 1K, and CRC, make it a "pretty slick new 
+      protocol" which is not significantly different from my own.
+      
+      Also, there is a catchy name - YMODEM. That means to some
+      that it is the  "next thing after XMODEM", and to others that it
+      is the Y(am)MODEM protocol.  I don't want to emphasize that too
+      much - out of fear that other mfgrs might think it is a
+      "competitive" protocol, rather than an "unaffiliated" protocol.
+      Chuck is currently selling a much-enhanced version of his
+      CP/M-80 C program YAM, calling it Professional Yam, and its 
+      for the PC - I'm using it right now.  VERY slick!  32K capture buffer,
+      script, scrolling, previously captured text search, plus
+      built-in commands for just about everything - directory (sorted
+      every which way), XMODEM, YMODEM, KERMIT, and ASCII file
+      upload/download, etc.  You can program it to "behave" with most
+      any system - for example when trying a number for CIS it detects
+      the "busy" string back from the modem and substitutes a diff
+      phone # into the dialing string and branches back to try it. 
+      
+      
+      
+      3.  XMODEM PROTOCOL ENHANCEMENTS
+      
+      This chapter discusses the protocol extensions to Ward Christensen's
+      1982 XMODEM protocol description document.
+      
+      The original document recommends the user be asked whether to continue
+      trying or abort after 10 retries.  Most programs no longer ask the
+      operator whether he wishes to keep retrying.  Virtually all correctable
+      errors are corrected within the first few retransmissions.  If
+      the line is so bad that ten attempts are insufficient, there is
+      a significant danger of undetected errors.  If the connection is
+      that bad, it's better to redial for a better connection, or
+      mail a floppy disk. 
+      
+      
+      
+      
+      
+      __________
+      
+       4. The file length, time, and file mode are optional.The pathname and
+          file length may be sent alone if desired.
+      
+      
+      
+      
+      Chapter   3                             XMODEM Protocol Enhancements
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                        6
+      
+      
+      
+      3.1  Graceful Abort
+      
+      The YAM and Professional-YAM X/YMODEM routines recognize a
+      sequence of two consecutive CAN (Hex 18) characters without modem
+      errors (overrun, framing, etc.) as a transfer abort command.  This
+      sequence is recognized when YAM is waiting for the beginning of a
+      packet or for an acknowledge to one that has been sent.  The
+      check for two consecutive CAN characters virtually eliminates the
+      possibility of a line hit aborting the transfer.  YAM sends
+      eight CAN characters when it aborts an XMODEM, YMODEM, or ZMODEM
+      protocol file transfer.  Pro-YAM then sends eight backspaces to delete
+      the CAN characters from the remote's keyboard input buffer, in
+      case the remote had already aborted the transfer and was
+      awaiting a keyboarded command.
+      
+      
+      3.2  CRC-16 Option
+      
+      The XMODEM protocol uses an optional two character CRC-16
+      instead of the one character arithmetic checksum used by the original
+      protocol and by most commercial implementations.  CRC-16
+      guarantees detection of all single and double bit errors, all errors
+      with an odd number of error bits, all burst errors of length 16 or
+      less, 99.9969% of all 17-bit error bursts, and 99.9984 per cent
+      of all possible longer error bursts.  By contrast, a double bit
+      error, or a burst error of 9 bits or more can sneak past the
+      XMODEM protocol arithmetic checksum.
+      
+      The XMODEM/CRC protocol is similar to the XMODEM protocol,
+      except that the receiver specifies CRC-16 by sending C (Hex
+      43) instead of NAK when requesting the FIRST packet.  A two
+      byte CRC is sent in place of the one byte arithmetic checksum.
+      
+      YAM's c option to the r command enables CRC-16 in single file
+      reception, corresponding to the original implementation in the
+      MODEM7 series programs.  This remains the default because many
+      commercial communications programs and bulletin board systems still do
+      not support CRC-16, especially those written in Basic or Pascal.
+      
+      XMODEM protocol with CRC is accurate provided both sender and
+      receiver both report a successful transmission. The protocol is robust
+      in the presence of characters lost by buffer overloading on
+      timesharing systems.
+      
+      The single character ACK/NAK responses generated by the
+      receiving program adapt well to split speed modems, where the reverse
+      channel is limited to ten per cent or less of he main channel's speed.
+      
+      XMODEM and YMODEM are half duplex protocols which do not attempt to
+      transmit information and control signals in both directions at the same
+      time.  This avoids buffer overrun problems that have been reported by
+      users attempting to exploit full duplex asynchronous file transfer
+      protocols such as Blast.
+      
+      Professional-YAM adds several proprietary logic enhancements to XMODEM's
+      
+      
+      
+      Chapter   3                                 XMODEM Protocol Enhancements
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                        7
+      
+      
+      
+      error detection and recovery.  These compatible enhancements eliminate
+      most of the bad file transfers other programs make when using
+      the XMODEM protocol under less than ideal conditions.
+      
+      
+      3.3  XMODEM-1k 1024 Byte Packet
+      
+      The choice to use 1024 byte packets is expressed to the sending
+      program on its command line or selection menu.[1] 1024 byte packets
+      improve throughput in many applications, but some environments cannot
+      accept 1024 byte bursts, especially minicomuters running 19.2kb
+      ports.
+      
+      An STX (02) replaces the SOH (01) at the beginning of the transmitted
+      block to notify the receiver of the longer packet length.  The
+      transmitted packet contains 1024 bytes of data.  The receiver
+      should be able to accept any mixture of 128 and 1024 byte
+      packets.  The packet number is incremented by one for each
+      packet regardless of the packet length. 
+      
+      The sender must not change between 128 and 1024 byte packet lengths if it
+      has not received a valid ACK for the current packet.  Failure to observe
+      this restriction allows certain transmission errors to pass undetected.
+      
+      If 1024 byte packets are being used, it is possible for a file to "grow"
+      up to the next multiple of 1024 bytes. This does not waste disk space if
+      the allocation granularity is 1k or greater.  With YMODEM batch
+      transmission, the optional file length transmitted in the file
+      name packet allows the receiver to discard the padding,
+      preserving the exact file length and contents.
+      
+      1024 byte packets may be used with batch file transmission or with single
+      file transmission.  CRC-16 should be used with the k option to preserve
+      data integrity over phone lines.  If a program wishes to enforce this
+      recommendation, it should cancel the transfer, then issue an informative
+      diagnostic message if the receiver requests checksum instead of CRC-16.
+      Under no circumstances may a sending program use CRC-16 unless the
+      receiver commands CRC-16.
+      
+      
+      4.  YMODEM Batch File Transmission
+      
+      The YMODEM Batch protocol is an extension to the XMODEM/CRC protocol that
+      allows 0 or more files to be transmitted with a single command.  (Zero
+      files may be sent if none of the requested files is accessible.) The
+      design approach of the YMODEM Batch protocol is to use the
+      normal routines for sending and receiving XMODEM packets in a
+      layered fashion similar to 
+      
+      
+      __________
+      
+       1. See "KMD/IMP Exceptions to YMODEM" below.
+      
+      
+      
+      
+      Chapter 4                                   XMODEM Protocol Enhancements
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference         09-11-86                      8
+      
+      
+      
+         Figure 1.  1024 byte Packets
+      
+          SENDER                                  RECEIVER
+                                                  "s -k foo.bar"
+          "foo.bar open x.x minutes"
+                                                  C
+          STX 01 FE Data[1024] CRC CRC
+                                                  ACK
+          STX 02 FD Data[1024] CRC CRC
+                                                  ACK
+          STX 03 FC Data[1000] CPMEOF[24] CRC CRC
+                                                  ACK
+          EOT
+                                                  ACK
+      
+         Figure 2.  Mixed 1024 and 128 byte Packets
+      
+          SENDER                                  RECEIVER
+                                                  "s -k foo.bar"
+          "foo.bar open x.x minutes"
+                                                  C
+          STX 01 FE Data[1024] CRC CRC
+                                                  ACK
+          STX 02 FD Data[1024] CRC CRC
+                                                  ACK
+          SOH 03 FC Data[128] CRC CRC
+                                                  ACK
+          SOH 04 FB Data[100] CPMEOF[28] CRC CRC
+                                                  ACK
+          EOT
+                                                  ACK
+      
+      packet switching methods.
+      
+      Why was it necessary to design a new batch protocol when one already
+      existed in MODEM7?[1] The batch file mode used by MODEM7 is unsuitable
+      because it does not permit full pathnames, file length, file date, or
+      other attribute information to be transmitted. Such a restrictive design,
+      hastily implemented with only CP/M in mind, would not have permitted
+      extensions to current areas of personal computing such as Unix, DOS, and
+      object oriented systems.  In addition, the MODEM7 batch file mode is
+      somewhat susceptible to transmission impairments.
+      
+      
+      
+      __________
+      
+       1. The MODEM7 batch protocol transmitted CP/M FCB bytes f1...f8 and
+          t1...t3 one character at a time.  The receiver echoed these bytes as
+          received, one at a time.
+      
+      
+      
+      
+      Chapter  4                             XMODEM Protocol Enhancements
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                        9
+      
+      
+      
+      As in the case of single a file transfer, the receiver initiates batch
+      file transmission by sending a "C" character (for CRC-16).
+      
+      The sender opens the first file and sends packet number 0 with the
+      following information.[2]
+      
+      Only the pathname (file name) part is required for batch transfers.
+      
+      To maintain upwards compatibility, all unused bytes in packet 0 must be
+      set to null.
+      
+      Pathname The pathname (conventionally, the file name) is sent as a null
+           terminated ASCII string.  This is the filename format used by the
+           handle oriented MSDOS(TM) functions and C library fopen functions.
+           An assembly language example follows:
+                      DB      'foo.bar',0
+           No spaces are included in the pathname.  Normally only the file name
+           stem (no directory prefix) is transmitted unless the sender has
+           selected YAM's f option to send the full pathname.  The source drive
+           (A:, B:, etc.) is never sent.
+      
+           Filename Considerations:
+      
+        + File names should be translated to lower case unless the sending
+         system supports upper/lower case file names. This is a
+         convenience for users of systems (such as Unix) which store
+         filenames in upper and lower case.
+      
+       + The receiver should accommodate file names in lower and upper
+         case.
+      
+       + When transmitting files between different operating systems,
+         file names must be acceptable to both the sender and receiving
+         operating systems.
+      
+           If directories are included, they are delimited by /; i.e.,
+           "subdir/foo" is acceptable, "subdir\foo" is not.
+      
+      Length The file length and each of the succeeding fields are optional.[3]
+           The length field is stored in the packet as a decimal
+           string counting the number of data bytes in the file.  The
+           file length does not include any CPMEOF (^Z) or other
+           garbage characters used to pad the last packet.
+      
+      
+      __________
+      
+       2. Only the data part of the packet is described here.
+      
+       3. Fields may not be skipped.
+      
+      
+      
+      
+      Chapter 4                               XMODEM Protocol Enhancements
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference  09-11-86                             10
+      
+      
+      
+           If the file being transmitted is growing during transmission, the
+           length field should be set to at least the final expected file
+           length, or not sent.
+      
+           The receiver stores the specified number of characters, discarding
+           any padding added by the sender to fill up the last packet.
+      
+      Modification Date The mod date is optional, and the filename and length
+           may be sent without requiring the mod date to be sent.
+      
+           Iff the modification date is sent, a single space separates the
+           modification date from the file length.
+      
+           The mod date is sent as an octal number giving the time the contents
+           of the file were last changed, measured in seconds from Jan 1 1970
+           Universal Coordinated Time (GMT). A date of 0 implies the
+           modification date is unknown and should be left as the date the file
+           is received.
+      
+           This standard format was chosen to eliminate ambiguities
+           arising from transfers between different time zones.
+      
+           Two Microsoft blunders complicate the use of modification dates in
+           file transfers with MSDOS(TM) systems.  The first is the lack of
+           timezone standardization in MS-DOS.  A file's creation time can not
+           be known unless the timezone of the system that wrote the file[4] is
+           known.  Unix solved this problem (for planet Earth, anyway) by
+           stamping files with Universal Time (GMT). Microsoft would have to
+           include the timezone of origin in the directory entries, but does
+           not.  Professional-YAM gets around this problem by using the z
+           parameter which is set to the number of minutes local time lags GMT.
+           For files known to originate from a different timezone, the -zT
+           option may be used to specify T as the timezone for an individual
+           file transfer.
+      
+           The second problem is the lack of a separate file creation date in
+           DOS.  Since some backup schemes used with DOS rely on the file
+           creation date to select files to be copied to the archive, back-
+           dating the file modification date could interfere with the safety of
+           the transferred files.  For this reason, Pro-YAM does not modify the
+           date of received files with the header information unless the d
+           numeric parameter is non zero.
+      
+      
+      
+      
+      
+      __________
+      
+       4. Not necessarily that of the transmitting system!
+      
+      
+      
+      
+      Chapter   4                             XMODEM Protocol Enhancements
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                       11
+      
+      
+      
+      Mode Iff the file mode is sent, a single space separates the file mode
+           from the modification date.  The file mode is stored as an octal
+           string.  Unless the file originated from a Unix system, the
+           file mode is set to 0.  rb(1) checks the file mode for the
+           0x8000 bit which indicates a Unix type regular file.  Files
+           with the 0x8000 bit set are assumed to have been sent from
+           another Unix (or similar) system which uses the same file
+           conventions.  Such files are not translated in any way.
+      
+      
+      Serial Number Iff the serial number is sent, a single space separates the
+           serial number from the file mode. The serial number of the
+           transmitting program is stored as an octal string.
+           Programs which do not have a serial number should omit this
+           field, or set it to 0.  The receiver's use of this field is
+           optional. 
+      
+      
+      Other Fields YMODEM was designed to allow additional header fields to be
+           added as above without creating compatibility problems with older
+           YMODEM programs.  Please contact Omen Technology if other fields are
+           needed for special application requirements.
+      
+      The rest of the packet is set to nulls.  This is essential to preserve
+      upward compatibility.[5]
+      
+      If the filename packet is received with a CRC or other error, a
+      restrnsmission is requested.  After the filename packet has been
+      received, it is ACK'ed if the write open is successful.  If the
+      file cannot be opened for writing, the receiver cancels the
+      transfer with CAN characters as described above.
+      
+      The receiver then initiates transfer of the file contents
+      according to the standard XMODEM/CRC protocol.
+      
+      After the file contents have been transmitted, the receiver
+      again asks for the next pathname.  Transmission of a null
+      pathname terminates batch file transmission.  Note that
+      transmission of no files is not necessarily an error. This is
+      possible if none of the files requested of the sender could be
+      opened for reading. 
+      
+      In batch transmission, the receiver automatically requests CRC-16.
+      
+      The Unix programs sz(1) and rz(1) included in the source code file
+      
+      
+      __________
+      
+       5. If, perchance, this information extends beyond 128 bytes (possible
+          with Unix 4.2 BSD extended file names), the packet should be
+          sent as a 1k packet as described above.
+      
+      
+      
+      
+      Chapter   4                             XMODEM Protocol Enhancements
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                       12
+      
+      
+      
+      RZSZ[12].SHQ (rzsz1.sh, rzsz2.sh) should answer other questions about
+      YMODEM batch protocol.
+      
+         Figure 3.  YMODEM Batch Transmission Session
+      
+          SENDER                                  RECEIVER
+                                                  "sb foo.*<CR>"
+          "sending in batch mode etc."
+                                                  C (command:rb)
+          SOH 00 FF foo.c NUL[123] CRC CRC
+                                                  ACK
+                                                  C
+          SOH 01 FE Data[128] CRC CRC
+                                                  ACK
+          STX 02 FD Data[1024] CRC CRC
+                                                  ACK
+          SOH 03 FC Data[128] CRC CRC
+                                                  ACK
+          SOH 04 FB Data[100] CPMEOF[28] CRC CRC
+                                                  ACK
+          EOT
+                                                  NAK
+          EOT
+                                                  ACK
+                                                  C
+          SOH 00 FF NUL[128] CRC CRC
+                                                  ACK
+      
+             Figure 4.  YMODEM Filename packet transmitted by sz
+      
+             -rw-r--r--  6347 Jun 17 1984 20:34 bbcsched.txt
+      
+             00 0100FF62 62637363 6865642E 74787400     |...bbcsched.txt.|
+             10 36333437 20333331 34373432 35313320     |6347 3314742513 |
+             20 31303036 34340000 00000000 00000000     |100644..........|
+             30 00000000 00000000 00000000 00000000
+             80 000000CA 56
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      Chapter   4                             XMODEM Protocol Enhancements
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                       13
+      
+      
+      
+            Figure 5.    YMODEM Header Information used by various programs
+      
+      _____________________________________________________________________
+      | Program   | Batch | Length | Date | Mode | S/N | 1k-Blk | g-Option |
+      |___________|_______|________|______|______|_____|________|__________|
+      |Unix rz/sz | yes   | yes    | yes  | yes  | no  | yes    | sb only  |
+      |___________|_______|________|______|______|_____|________|__________|
+      |VMS rb/sb  | yes   | yes    | no   | no   | no  | yes    | no       |
+      |___________|_______|________|______|______|_____|________|__________|
+      |Pro-YAM    | yes   | yes    | yes  | no   | yes | yes    | yes      |
+      |___________|_______|________|______|______|_____|________|__________|
+      |CP/M YAM   | yes   | no     | no   | no   | no  | yes    | no       |
+      |___________|_______|________|______|______|_____|________|__________|
+      |KMD/IMP    | yes   | ?      | no   | no   | no  | yes    | no       |
+      |___________|_______|________|______|______|_____|________|__________|
+      
+      4.1  KMD/IMP Exceptions to YMODEM
+      
+      KMD and IMP character sequence emitted by the receiver (CK) to
+      automatically trigger the use of 1024 byte packets as an alternative to
+      specifying this option on this command line.  Although this two character
+      sequence works well on single process micros in direct communication,
+      timesharing systems and packet switched networks can separate the
+      successive characters by several seconds, rendering this method
+      unreliable.
+      
+      Sending programs may detect the CK sequence if the operating enviornment
+      does not preclude reliable implementation.
+      
+      Receiving programs should retain the option of sending the
+      standard YMODEM C (not CK) trigger with the standard 10 second
+      timeout to insure compatibility with newer forms of
+      telecommunications technology. 
+      
+      
+      
+      5.  YMODEM-g File Transmission
+      
+      Developing technology is providing phone line data transmission at ever
+      higher speeds using very specialized techniques.  These high
+      speed modems, as well as session protocols such as X.PC, provide
+      high speed, error free communications at the expense of
+      considerably increased delay time. 
+      
+      This delay time is moderate compared to human interactions, but it
+      cripples the throughput of most error correcting protocols.
+      
+      The g option to YMODEM has proven effective under these circumstances.
+      The g option is driven by the receiver, which initiates the
+      batch transfer by transmitting a G instead of C.  When the
+      sender recognizes the G, it bypasses the usual wait for an ACK
+      to each transmitted packet, sending succeeding packets at full
+      speed, subject to XOFF/XON or other flow control exerted by the medium.
+      
+      
+      
+      Chapter   5                             XMODEM Protocol Enhancements
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                       14
+      
+      
+      
+      The sender expects an inital G to initiate the transmission of a
+      particular file, and also expects an ACK on the EOT sent at the end of
+      each file.  This synchronization allows the receiver time to open and
+      close files as necessary.
+      
+      If an error is detected in a YMODEM-g transfer, the receiver aborts the
+      transfer with the multiple CAN abort sequence. The ZMODEM protocol should
+      be used in applications that require both streaming throughput and error
+      recovery.
+      
+             Figure 6.  YMODEM-g Transmission Session
+      
+             SENDER                                      RECEIVER
+                                                 "sb foo.*<CR>"
+             "sending   in batch mode etc..."
+                                                 G (command:rb -g)
+             SOH 00 FF foo.c NUL[123]   CRC CRC
+                                                 G
+             SOH 01 FE Data[128] CRC CRC
+             STX 02 FD Data[1024] CRC   CRC
+             SOH 03 FC Data[128] CRC CRC
+             SOH 04 FB Data[100] CPMEOF[28] CRC CRC
+             EOT
+                                                 ACK
+                                                 G
+             SOH 00 FF NUL[128] CRC CRC
+      
+      
+      6.  XMODEM PROTOCOL OVERVIEW
+      
+      8/9/82 by Ward Christensen.
+      
+      I will maintain a master copy of this. Please pass on changes or
+      suggestions via CBBS/Chicago at (312) 545-8086, CBBS/CPMUG (312) 849-1132
+      or by voice at (312) 849-6279.
+      
+      6.1  Definitions
+      
+        <soh>   01H
+        <eot>   04H
+        <ack>   06H
+        <nak>   15H
+        <can>   18H
+        <C>     43H
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      Chapter   6                                 Xmodem Protocol Overview
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                       15
+      
+      
+      
+      6.2  Transmission Medium Level Protocol
+      
+      Asynchronous, 8 data bits, no parity, one stop bit.
+      
+      The protocol imposes no restrictions on the contents of the data being
+      transmitted.  No control characters are looked for in the 128-byte data
+      messages.  Absolutely any kind of data may be sent - binary, ASCII, etc.
+      The protocol has not formally been adopted to a 7-bit environment for the
+      transmission of ASCII-only (or unpacked-hex) data , although it could be
+      simply by having both ends agree to AND the protocol-dependent data with
+      7F hex before validating it.  I specifically am referring to the
+      checksum, and the block numbers and their ones- complement.
+      
+      Those wishing to maintain compatibility of the CP/M file structure, i.e.
+      to allow modemming ASCII files to or from CP/M systems should follow this
+      data format:
+      
+         + ASCII tabs used (09H); tabs set every 8.
+      
+         + Lines terminated by CR/LF (0DH 0AH)
+      
+         + End-of-file indicated by ^Z, 1AH. (one or more)
+      
+         + Data is variable length, i.e. should be considered a continuous
+           stream of data bytes, broken into 128-byte chunks purely for the
+           purpose of transmission.
+      
+         + A CP/M "peculiarity": If the data ends exactly on a 128-byte
+           boundary, i.e. CR in 127, and LF in 128, a subsequent sector
+           containing the ^Z EOF character(s) is optional, but is preferred.
+           Some utilities or user programs still do not handle EOF without ^Zs.
+      
+         + The last block sent is no different from others, i.e.  there is no
+           "short block".
+              Figure 7.  XMODEM Message Block Level Protocol
+      
+      Each block of the transfer looks like:
+            <SOH><blk #><255-blk #><--128 data bytes--><cksum>
+      in which:
+      <SOH>           = 01 hex
+      <blk #>         = binary number, starts at 01 increments by 1, and
+                wraps 0FFH to 00H (not to 01)
+      <255-blk #>   =   blk # after going thru 8080 "CMA" instr, i.e.
+                each bit complemented in the 8-bit block number.
+                Formally, this is the "ones complement".
+      <cksum>       = the sum of the data bytes only.  Toss any carry.
+      
+      
+      
+      
+      
+      
+      
+      
+      Chapter   6                                 Xmodem Protocol Overview
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                       16
+      
+      
+      
+      6.3  File Level Protocol
+      
+      6.3.1  Common_to_Both_Sender_and_Receiver
+      All errors are retried 10 times.  For versions running with an operator
+      (i.e. NOT with XMODEM), a message is typed after 10 errors asking the
+      operator whether to "retry or quit".
+      
+      Some versions of the protocol use <can>, ASCII ^X, to cancel
+      transmission. This was never adopted as a standard, as having a
+      single "abort" character makes the transmission susceptible to
+      false termination due to an <ack> <nak> or <soh> being corrupted
+      into a <can> and aborting transmission. 
+      
+      The protocol may be considered "receiver driven", that is, the
+      sender need not automatically re-transmit, although it does in
+      the current implementations.
+      
+      
+      6.3.2  Receive_Program_Considerations
+      The receiver has a 10-second timeout.  It sends a <nak> every time it
+      times out.  The receiver's first timeout, which sends a <nak>,
+      signals the transmitter to start.  Optionally, the receiver
+      could send a <nak> immediately, in case the sender was ready.
+      This would save the initial 10 second timeout.  However, the
+      receiver MUST continue to timeout every 10 seconds in case the
+      sender wasn't ready. 
+      
+      Once into a receiving a block, the receiver goes into a
+      one-second timeout for each character and the checksum.  If the
+      receiver wishes to <nak> a block for any reason (invalid header,
+      timeout receiving data), it must wait for the line to clear.
+      See "programming tips" for ideas.
+      
+      Synchronizing: If a valid block number is received, it will be: 1) the
+      expected one, in which case everything is fine; or 2) a repeat of the
+      previously received block.  This should be considered OK, and only
+      indicates that the receivers <ack> got glitched, and the sender re-
+      transmitted; 3) any other block number indicates a fatal loss of
+      synchronization, such as the rare case of the sender getting a
+      line-glitch that looked like an <ack>.  Abort the transmission,
+      sending a <can> 
+      
+      
+      6.3.3  Sending_program_considerations
+      While waiting for transmission to begin, the sender has only a
+      single very long timeout, say one minute.  In the current
+      protocol, the sender has a 10 second timeout before retrying.  I
+      suggest NOT doing this, and letting the protocol be completely
+      receiver-driven.  This will be compatible with existing programs.
+      
+      When the sender has no more data, it sends an <eot>, and awaits an <ack>,
+      resending the <eot> if it doesn't get one.  Again, the protocol could be
+      receiver-driven, with the sender only having the high-level 1-minute
+      timeout to abort.
+      
+      
+      
+      
+      Chapter   6                                 Xmodem Protocol Overview
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                       17
+      
+      
+      
+      Here is a sample of the data flow, sending a 3-block message.
+      It includes the two most common line hits - a garbaged block,
+      and an <ack> reply getting garbaged.  <xx> represents the checksum byte.
+      
+             Figure 8.  Data flow including Error Recovery
+      
+      SENDER                            RECEIVER
+                              times out after 10 seconds,
+                              <---              <nak>
+      <soh> 01 FE -data- <xx>         --->
+                              <---              <ack>
+      <soh> 02 FD -data- xx           --->       (data gets line hit)
+                              <---              <nak>
+      <soh> 02 FD -data- xx           --->
+                              <---              <ack>
+      <soh> 03 FC -data- xx           --->
+      (ack gets garbaged)             <---              <ack>
+      <soh> 03 FC -data- xx           --->              <ack>
+      <eot>                           --->
+                              <---       <anything except ack>
+      <eot>                           --->
+                              <---              <ack>
+      (finished)
+      
+      6.4  Programming Tips
+      
+         + The character-receive subroutine should be called with a parameter
+           specifying the number of seconds to wait. The receiver should first
+           call it with a time of 10, then <nak> and try again, 10 times.
+      
+           After receiving the <soh>, the receiver should call the character
+           receive subroutine with a 1-second timeout, for the remainder of the
+           message and the <cksum>.  Since they are sent as a
+           continuous stream, timing out of this implies a serious
+           like glitch that caused, say, 127 characters to be seen
+           instead of 128. 
+      
+         + When the receiver wishes to <nak>, it should call a "PURGE"
+           subroutine, to wait for the line to clear.  Recall the sender tosses
+           any characters in its UART buffer immediately upon
+           completing sending a block, to ensure no glitches were mis- 
+           interpreted. 
+      
+           The most common technique is for "PURGE" to call the character
+           receive subroutine, specifying a 1-second timeout,[1] and looping
+           back to PURGE until a timeout occurs.  The <nak> is then sent,
+           ensuring the other end will see it.
+      
+      
+      __________
+      
+       1. These times should be adjusted for use with timesharing systems.
+      
+      
+      
+      
+      Chapter   6                                 Xmodem Protocol Overview
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                       18
+      
+      
+      
+         + You may wish to add code recommended by John Mahr to your character
+           receive routine - to set an error flag if the UART shows framing
+           error, or overrun.  This will help catch a few more glitches - the
+           most common of which is a hit in the high bits of the byte in two
+           consecutive bytes.  The <cksum> comes out OK since counting
+           in 1-byte produces the same result of adding 80H + 80H as
+           with adding 00H + 00H.
+      
+      
+      
+      7.  XMODEM/CRC Overview
+      
+      1/13/85 by John Byrns -- CRC option.
+      
+      Please pass on any reports of errors in this document or suggestions for
+      improvement to me via Ward's/CBBS at (312) 849-1132, or by voice at (312)
+      885-1105.
+      
+      The CRC used in the Modem Protocol is an alternate form of block check
+      which provides more robust error detection than the original checksum.
+      Andrew S. Tanenbaum says in his book, Computer Networks, that the CRC-
+      CCITT used by the Modem Protocol will detect all single and double bit
+      errors, all errors with an odd number of bits, all burst errors of length
+      16 or less, 99.997% of 17-bit error bursts, and 99.998% of 18-bit and
+      longer bursts.
+      
+      The changes to the Modem Protocol to replace the checksum with
+      the CRC are straight forward. If that were all that we did we
+      would not be able to communicate between a program using the old
+      checksum protocol and one using the new CRC protocol. An initial
+      handshake was added to solve this problem. The handshake allows
+      a receiving program with CRC capability to determine whether the
+      sending program supports the CRC option, and to switch it to CRC
+      mode if it does. This handshake is designed so that it will work
+      properly with programs which implement only the original
+      protocol. A description of this handshake is presented in section 10. 
+      
+           Figure 9.  Message Block Level Protocol, CRC mode
+      
+      Each block of the transfer in CRC mode looks like:
+           <SOH><blk #><255-blk #><--128 data   bytes--><CRC hi><CRC lo>
+      in which:
+      <SOH>          = 01 hex
+      <blk #>        = binary number, starts at 01 increments by 1, and
+               wraps 0FFH to 00H (not to 01)
+      <255-blk #>  = ones complement of blk #.
+      <CRC hi>     = byte containing the 8 hi   order coefficients of the CRC.
+      <CRC lo>     = byte containing the 8 lo   order coefficients of the CRC.
+      
+      
+      
+      
+      
+      
+      
+      Chapter   7                                 Xmodem Protocol Overview
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                       19
+      
+      
+      
+      7.1  CRC Calculation
+      
+      7.1.1  Formal_Definition
+      To calculate the 16 bit   CRC the message bits are considered to be the
+      coefficients of a polynomial. This message polynomial is first multiplied
+      by X^16 and then divided by the generator polynomial (X^16 + X^12 + X^5 +
+      1) using modulo two arithmetic. The remainder left after the division is
+      the desired CRC. Since a message block in the Modem Protocol is 128 bytes
+      or 1024 bits, the message polynomial will be of order X^1023.
+      The hi order bit of the first byte of the message block is the
+      coefficient of X^1023 in the message polynomial.  The lo order
+      bit of the last byte of the message block is the coefficient of
+      X^0 in the message polynomial. 
+      
+          Figure 10.  Example of CRC Calculation written in C
+      UPDCRC update routine from "rbsb.c".  Refer to the source code for these
+      programs (contained in RZSZ1.SHQ and RZSZ2.SHQ) for usage.  A fast table
+      driven macro is also included in this file.
+      /* update CRC */
+      unsigned short
+      updcrc(c, crc)
+      register c;
+      register unsigned crc;
+      {
+        register count;
+      
+        for (count=8; --count>=0;) {
+                if (crc & 0x8000) {
+                        crc <<= 1;
+                        crc += (((c<<=1) & 0400)  !=  0);
+                        crc ^= 0x1021;
+                }
+                else {
+                        crc <<= 1;
+                        crc += (((c<<=1) & 0400)  !=  0);
+                }
+        }
+        return crc;
+      }
+      
+      7.2  CRC File Level Protocol Changes
+      
+      7.2.1  Common_to_Both_Sender_and_Receiver
+      The only change to the File Level Protocol for the CRC option is the
+      initial handshake which is used to determine if both the sending and the
+      receiving programs support the CRC mode. All Modem Programs
+      should support the checksum mode for compatibility with older
+      versions.  A receiving program that wishes to receive in CRC
+      mode implements the mode setting handshake by sending a <C> in
+      place of the initial <nak>.  If the sending program supports CRC
+      mode it will recognize the <C> and will set itself into CRC
+      mode, and respond by sending the first block as if a <nak> had 
+      been received. If the sending program does not support CRC mode it will
+      
+      
+      
+      Chapter   7                                 Xmodem Protocol Overview
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                       20
+      
+      
+      
+      not respond to the <C> at all. After the receiver has sent the
+      <C> it will wait up to 3 seconds for the <soh> that starts the
+      first block. If it receives a <soh> within 3 seconds it will
+      assume the sender supports CRC mode and will proceed with the
+      file exchange in CRC mode. If no <soh> is received within 3
+      seconds the receiver will switch to checksum mode, send a <nak>,
+      and proceed in checksum mode. If the receiver wishes to use 
+      checksum mode it should send an initial <nak> and the sending program
+      should respond to the <nak> as defined in the original Modem Protocol.
+      After the mode has been set by the initial <C> or <nak> the protocol
+      follows the original Modem Protocol and is identical whether the checksum
+      or CRC is being used.
+      
+      
+      7.2.2  Receive_Program_Considerations
+      There are at least 4 things that can go wrong with the mode setting
+      handshake.
+      
+        1.  the initial <C> can be garbled or lost.
+      
+        2.  the initial <soh> can be garbled.
+      
+        3.  the initial <C> can be changed to a <nak>.
+      
+        4.  the initial <nak> from a receiver which wants to receive
+            in checksum can be changed to a <C>.
+      
+      The first problem can be solved if the receiver sends a second <C> after
+      it times out the first time. This process can be repeated several times.
+      It must not be repeated too many times before sending a <nak> and
+      switching to checksum mode or a sending program without CRC support may
+      time out and abort. Repeating the <C> will also fix the second problem if
+      the sending program cooperates by responding as if a <nak> were received
+      instead of ignoring the extra <C>.
+      
+      It is possible to fix problems 3 and 4 but probably not worth the trouble
+      since they will occur very infrequently. They could be fixed by switching
+      modes in either the sending or the receiving program after a large number
+      of successive <nak>s. This solution would risk other problems however.
+      
+      
+      7.2.3  Sending_Program_Considerations
+      The sending program should start in the checksum mode. This will insure
+      compatibility with checksum only receiving programs. Anytime a <C> is
+      received before the first <nak> or <ack> the sending program should set
+      itself into CRC mode and respond as if a <nak> were received. The sender
+      should respond to additional <C>s as if they were <nak>s until the first
+      <ack> is received. This will assist the receiving program in determining
+      the correct mode when the <soh> is lost or garbled. After the first <ack>
+      is received the sending program should ignore <C>s.
+      
+      
+      
+      
+      
+      Chapter 7                                   Xmodem Protocol Overview
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                       21
+      
+      
+      
+      7.3  Data Flow Examples with CRC Option
+      
+      Here is a data flow example for the case where the receiver requests
+      transmission in the CRC mode but the sender does not support the CRC
+      option. This example also includes various transmission errors.  <xx>
+      represents the checksum byte.
+      
+            Figure 11.  Data Flow: Receiver has CRC Option, Sender Doesn't
+      
+      SENDER                                          RECEIVER
+                        <---                <C>
+                                times out after 3 seconds,
+                        <---                <C>
+                                times out after 3 seconds,
+                        <---                <C>
+                                times out after 3 seconds,
+                        <---                <C>
+                                times out after 3 seconds,
+                        <---                <nak>
+      <soh> 01 FE -data- <xx>   --->
+                        <---                <ack>
+      <soh> 02 FD -data- <xx>   --->        (data gets line hit)
+                        <---                <nak>
+      <soh> 02 FD -data- <xx>   --->
+                        <---                <ack>
+      <soh> 03 FC -data- <xx>   --->
+         (ack   gets garbaged)  <---                <ack>
+                                times out after 10 seconds,
+                        <---                <nak>
+      <soh> 03 FC -data- <xx>   --->
+                        <---                <ack>
+      <eot>                     --->
+                        <---                <ack>
+      
+      Here is a data flow example for the case where the receiver requests
+      transmission in the CRC mode and the sender supports the CRC
+      option.  This example also includes various transmission errors.
+      <xxxx> represents the  2 CRC bytes.
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      Chapter 7                                   Xmodem Protocol Overview
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                       22
+      
+      
+      
+          Figure 12.  Receiver and Sender Both have CRC Option
+      
+      SENDER                                         RECEIVER
+                          <---                 <C>
+      <soh> 01 FE -data- <xxxx> --->
+                          <---                 <ack>
+      <soh> 02 FD -data- <xxxx> --->           (data gets line hit)
+                          <---                 <nak>
+      <soh> 02 FD -data- <xxxx> --->
+                          <---                 <ack>
+      <soh> 03 FC -data- <xxxx> --->
+      (ack gets garbaged)         <---                 <ack>
+                                     times out after 10 seconds,
+                          <---                 <nak>
+      <soh> 03 FC -data- <xxxx> --->
+                          <---                 <ack>
+      <eot>                       --->
+                          <---                 <ack>
+      
+      
+      8.  MORE INFORMATION
+      
+      More information may be obtained by calling Telegodzilla at 503-621-3746.
+      Hit RETURNs for baud rate detection.Speed detection is automatic for 300,
+      1200, and 2400 bps.
+      
+      A version this file with boldface, underlining, and superscripts for
+      printing on Epson or Gemini printers is available on Telegodzilla as
+      "YMODEME.DOC" or "YMODEME.DQC".
+      
+      UUCP sites can obtain this file   with
+             uucp omen!/usr/spool/uucppublic/ymodem.doc /tmp
+      A continually updated list of available   files is stored in
+      /usr/spool/uucppublic/FILES.
+      
+      The following L.sys line calls Telegodzilla (Pro-YAM in host operation).
+      Telegodzilla waits for carriage returns to determine the incoming speed.
+      If none is detected, 1200 bps is assumed and a greeting is displayed.
+      
+      In response to "Name Please:" uucico gives the Pro-YAM "link"
+      command as a user name.  The password (Giznoid) controls access
+      to the Xenix system connected to the IBM PC's other serial port.
+      Communications between Pro-YAM and Xenix use 9600 bps; YAM
+      converts this to the caller's speed. 
+      
+      Finally, the calling uucico logs in as uucp.
+      
+      omen Any ACU 1200 1-503-621-3746 se:--se: link ord: Giznoid in:--in: uucp
+      
+      Contact omen!caf if you wish the troff source files.
+      
+      
+      
+      
+      
+      Chapter   8                                 Xmodem Protocol Overview
+      
+      
+      
+      
+      
+      
+      
+      X/YMODEM Protocol Reference        09-11-86                       23
+      
+      
+      
+      9.  Document Revisions
+      
+      The September 11 1986 edition clarifies nomenclature and some minor
+      points.  The April 15 1986 edition clarifies some points concerning CRC
+      calculations and spaces in the header.
+      
+      
+      10.  YMODEM Programs
+      
+      A demonstration version of Professional-YAM is available as ZMODEM.ARC
+      This may be used to test YMODEM amd ZMODEM implementations.
+      
+      Unix programs supporting the YMODEM protocol are available on
+      Telegodzilla as RZSZ1.SHQ and RZSZ2.SHQ (SQueezed shell archives).
+      Most Unix like systems are supported, including V7, Xenix, Sys III,
+      4.2 BSD, SYS V, Idris, Coherent, and Regulus.
+      
+      A version for VAX-VMS is available in VRBSB.SHQ.
+      
+      Irv Hoff has added YMODEM 1k packets and basic YMODEM batch transfers to
+      the KMD and IMP series programs, which replace the XMODEM and
+      MODEM7/MDM7xx series respectively.  Overlays are available for a wide
+      variety of CP/M systems.
+      
+      Questions about YMODEM, the Professional-YAM communications program, and
+      requests for evaluation copies may be directed to:
+           Chuck Forsberg
+           Omen Technology Inc
+           17505-V Sauvie Island Road
+           Portland Oregon 97231
+           Voice: 503-621-3406
+           Modem: 503-621-3746 Speed: 2400,1200,300
+           Usenet: ...!tektronix!reed!omen!caf
+           Compuserve: 70007,2304
+           Source: TCE022
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      Chapter 10                                  Xmodem Protocol Overview
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+                                 CONTENTS
+      
+      
+       1.  ROSETTA STONE....................................................  2
+      
+       2.  YET ANOTHER PROTOCOL?............................................  2
+           2.1  Some Messages from the Pioneer..............................  4
+      
+       3.  XMODEM PROTOCOL ENHANCEMENTS.....................................  5
+           3.1  Graceful Abort..............................................  6
+           3.2  CRC-16 Option...............................................  6
+           3.3  XMODEM-1k 1024 Byte Packet..................................  7
+      
+       4.  YMODEM Batch File Transmission...................................  7
+           4.1  KMD/IMP Exceptions to YMODEM................................ 13
+      
+       5.  YMODEM-g File Transmission....................................... 13
+      
+       6.  XMODEM PROTOCOL OVERVIEW......................................... 14
+           6.1  Definitions................................................. 14
+           6.2  Transmission Medium Level Protocol.......................... 15
+           6.3  File Level Protocol......................................... 16
+           6.4  Programming Tips............................................ 17
+      
+       7.  XMODEM/CRC Overview.............................................. 18
+           7.1  CRC Calculation............................................. 19
+           7.2  CRC File Level Protocol Changes............................. 19
+           7.3  Data Flow Examples with CRC Option.......................... 21
+      
+       8.  MORE INFORMATION................................................. 22
+      
+       9.  Document Revisions............................................... 23
+      
+      10.  YMODEM Programs.................................................. 23
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+                                   - i -
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+                             LIST OF FIGURES
+      
+      
+       Figure 1.  1024 byte Packets.........................................  7
+      
+       Figure 2.  Mixed 1024 and 128 byte Packets...........................  7
+      
+       Figure 3.  YMODEM Batch Transmission Session......................... 12
+      
+       Figure 4.  YMODEM Filename packet transmitted by sz.................. 12
+      
+       Figure 5.  YMODEM Header Information used by various programs........ 13
+      
+       Figure 6.  YMODEM-g Transmission Session............................. 14
+      
+       Figure 7.  XMODEM Message Block Level Protocol....................... 15
+      
+       Figure 8.  Data flow including Error Recovery........................ 17
+      
+       Figure 9.  Message Block Level Protocol, CRC mode.................... 18
+      
+      Figure 10.  Example of CRC Calculation written in C................... 19
+      
+      Figure 11.  Data Flow: Receiver has CRC Option, Sender Doesn't........ 21
+      
+      Figure 12.  Receiver and Sender Both have CRC Option.................. 22
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+                                  - ii -
+      
+      
+      
+      
