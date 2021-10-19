@@ -1,0 +1,456 @@
+
+
+	010	HModem II
+
+
+
+	    HMODEM II - Modem Program for Heath/Zenith 8-bit Computers
+	    (C) COPYRIGHT 1988 by Harold D. Maney; ALL RIGHTS RESERVED
+	
+	
+	Please refer all inquiries to:
+	
+	       Harold D. Maney
+	       510 Barrack Hill Rd
+	       Ridgefield, CT 06877
+	
+	DISCLAIMER:  No warranty of any kind is made with regard to this
+	program.  Neither the Author nor the Distributor shall be liable for
+	errors contained herein or for incidental or consequential damages in
+	connection with furnishing, performance, or use of this material.
+	
+	You may copy and distribute this program freely, provided that:
+	    1)   No fee is charged for such copying and distribution, and
+	    2)   It is distributed ONLY in its original, unmodified state.
+	
+	If you like this program and find it of use, then a contribution of
+	$25 would be appreciated.  You may not use this product in a commercial
+	or government organization without paying a license fee of $35.
+	
+	
+	1  INTRODUCTION
+	
+	1.1  Why HModem II?
+	
+	Yes, I know that there are more modem programs for CP/M than you
+	can shake a stick at, and that it is probably a waste of time
+	writing a new one.  However, I like to write communications
+	programs, and besides, I never found one for CP/M that I really
+	liked.
+	
+	Most CP/M communications programs (especially the shareware type)
+	come as a general program with overlays for the particular
+	computer in use.  This is fine, because it increases the
+	portability of the program.  The overlays never seem to take full
+	advantage of each machine's capabilities, unfortunately, so the
+	smooth user interfaces so prevalent in MS-DOS programs are not
+	normally found with CP/M programs unless they are written
+	specifically for a particular machine.
+	
+	For this reason I wrote HModem II to work only on a Heath/Zenith
+	Z80 machine with a H-19 type terminal.  The program uses the
+	H-19/89 function keys and escape sequences for a simple user
+	interface.  It relies upon the Heath tick counter for timing and
+	uses a few Z80 instructions.  If there is someone out there who
+	still has an original H-8 with the 8080 processor, contact the me
+	for an 8080 version.
+	
+	The other reason I wrote this program was for my sister Linda,
+	who is in law school, sees no reason to junk her Z89 at the
+	present time, and liked the first version of HModem which I wrote
+
+
+
+	                              - 1 -
+
+
+
+	HModem II
+
+
+
+	several years ago as a programming project.  This new version
+	provides her a slicker user interface, the latest file transfer
+	protocols, and some new features which rival the best MSDOS
+	programs.
+	
+	
+	1.2  Features of HModem II
+	
+	HModem II is a modern communications program for the Heath/Zenith
+	8-bit machines.  It has features not normally found in CP/M modem
+	programs.  Because CP/M hardware was never standardized as was
+	MS-DOS hardware, user interfaces had to be general, normally
+	relying on terminal and command modes which were toggled by
+	control characters.  HModem II, because it is written only for
+	the H-19/89, uses the function keys for all commands.  This
+	allows the user to remain in terminal mode when giving most
+	commands.
+	
+	Key features of HModem II are as follows:
+	
+	a.  Support for XMODEM, YMODEM, and ZMODEM as well as ASCII file
+	    transfer protocols.
+	
+	b.  Dialing directory with settable line parameters, long
+	    distance access support, and automatic redial of number
+	    lists.
+	
+	c.  A host mode with password protection.  This is not a full
+	    blown BBS, but it works very well as a limited-access host.
+	
+	d.  Printer echo mode and print screen function.
+	
+	e.  H-19 keypad macros to simplify logons.
+	
+	f.  Status bar on screen with "soft" function key labels.
+	
+	g.  Interrupt-driven input.
+	
+	h.  Full file transfer progress reporting using H-19 screen
+	    control functions.
+	
+	i.  Selectable automatic capture of screen data to a disk log
+	    file.
+	
+	j.  Full user-configurability of the program.
+	
+	
+	1.3  System Requirements
+	
+	To use HModem II you must have a Heath or Zenith 8-bit system
+	(H8, H/Z89 or equivalent) with a H-19/89 type terminal.  The
+	standard version requires a Z-80 processor.  However persons who
+	want to use the program with an H8 and the original 8080
+	processor may contact the author for a special version.
+
+
+
+	                              - 2 -
+
+
+
+	HModem II
+
+
+
+	
+	The I/O card used is a standard Heath or Zenith serial card.  The
+	serial port used must be jumpered to enable an interrupt.  HModem
+	II is distributed to use interrupt #5, but can be changed by the
+	user via the "Configure" function key.  The port address (also
+	user-changeable) is set at 330Q in HModem II.  Refer to the
+	Heath/Zenith Operation manual for your serial card for
+	information on how to set the address and enable the interrupt on
+	your serial card.
+	
+	The program runs fine on machines operating at either 2 or 4
+	MHz.  Users running at 2 MHz may find that XON/XOFF must be
+	enabled when using 2400 bps modems.  I have not tested HModem II
+	with modems faster than 2400 bps.
+	
+	The program is distributed configured to operate with Hayes-
+	compatible modems.  All the modem commands are user-changeable,
+	however, so it should work just as well with other "smart"
+	modems.  If you have a modem that is not Hayes-compatible, refer
+	to your modem manual for the correct command strings to enter. 
+	These command strings can be changed using the "Configure"
+	function.
+	
+	The program was developed on a H8 with a Trionyx 64k memory board
+	and a Trionyx Z80 cpu board (2 and 4 Mhz).  The disks were
+	80-track Z-37's and the terminal was a H-19.  All editing and
+	compiling was done on an IBM PC clone with a NEC V-20 processor
+	and a hard disk.  The program was also tested on a Z89/Z37 system
+	running at 2 Mhz.
+	
+	
+	2  GETTING STARTED
+	
+	2.1  HModem II Files
+	
+	As distributed, HModem II consists of 4 files:
+	
+	a.  HM.COM               the program
+	
+	b.  HCONFIG.COM          the configuration overlay
+	
+	c.  HMODEM.HLP           the help file
+	
+	d.  HMODEM.DOC           this document
+	
+	These files will be squeezed and stored in a library file called
+	HMODEM2.LBR.
+	
+	During the course of operation, HMODEM II may automatically
+	generate the following additional files:
+	
+	a.  HMODEM.CFG           the configuration data file
+	
+	b.  HMODEM.LOG           the log file where capture data is saved
+
+
+
+	                              - 3 -
+
+
+
+	HModem II
+
+
+
+	
+	c.  HMODEM.MSG           the file for storing incoming messages
+	                         in Host mode
+	
+	d.  HMODEM.FON           the telephone directory
+	
+	HM.COM, HCONFIG.COM, HM.HLP, and HMODEM.CFG (if it exists) must
+	always reside on the default disk when the program is invoked. 
+	HMODEM.CFG and HMODEM.FON will always be created on the disk from
+	which HM.COM was invoked.  HMODEM.LOG, and HMODEM.MSG will always
+	be created on the download default disk which is user-selectable
+	in the "Configure" function.  HModem II is distributed with drive
+	A: as the default download disk.
+	
+	
+	2.2  Configuration
+	
+	HModem II is distributed with a standard default configuration
+	built in.  When it starts up it looks on the default drive for
+	the file HMODEM.CFG.  If this file is not found, HModem II uses
+	the standard default configuration.  HMODEM.CFG will not exist
+	until you run the program HCONFIG.COM either stand-alone or from
+	within HMODEM.  HMODEM.CFG will contain your particular
+	configuration settings as well as your keypad macros.  A separate
+	file HMODEM.FON is created by the configuration function as the
+	dialing directory.
+	
+	The easiest way to configure HModem II is to press the function
+	key marked "CONFIGURE" from within HModem II.  If you want to
+	configure HModem II externally, you can run HCONFIG.COM in a
+	stand-alone mode by typing "HCONFIG".
+	
+	
+	2.3  Running the Program
+	
+	2.3.1  Invoking HModem II
+	
+	To invoke HModem II, type "HM <return>" at the CP/M prompt.  Make
+	sure the required files are on the default disk, as mentioned
+	above.  The first display will be the introductory screen which
+	displays the program name and version.  This screen will remain
+	on for 10 seconds or until a key is pressed, whichever occurs
+	first.  The program will then initialize itself and the modem and
+	display a screen which is blank except for the status bar across
+	the bottom and the word "READY" at the top.
+	
+	At this time you will be in terminal mode.  If you are running
+	the program for the first time and you are using a Hayes-
+	compatible modem, you may not see characters on the screen when
+	you press the keys because the program automatically disables the
+	modem echo by sending the default modem initialization string. 
+	If you so desire, you can restore the modem echo by typing the
+	modem command "ATZ <return>", or by changing the modem
+	initialization string under the "Configure" function.  
+
+
+
+	                              - 4 -
+
+
+
+	HModem II
+
+
+
+	2.3.2  The Status Bar
+	
+	The status bar, located on the 25th line of the H-19, provides an
+	indication of the current program status.  Whenever HModem II is
+	in terminal mode, the status bar is divided into fourteen (14)
+	sections providing the following information:
+	
+	Section 1:  Indicates the command level with the symbols "1>" or
+	            "2>".  This is the only part  of the bar that is not
+	            in reverse video.
+	
+	Sections 2 through 10:  Contain labels for the 9 function keys
+	            across the top row.  These are different for the two
+	            command levels.  The BLUE key will always switch the
+	            command level.
+	
+	Section 11:  Indicates the current line settings.  "12N81" means 
+	            1200 bits per second, no parity, 8 bits, 1 stop bit.
+	
+	Section 12:  Indicates whether the log (capture) mode is enabled.
+	            The letters "LG" indicate log is enabled, while two
+	            hyphens (--) mean disabled.
+	
+	Section 13:  Indicates whether printer echo is enabled.  "PR"
+	            means enabled, "--" means disabled.
+	
+	Section 14:  Indicates whether full or half duplex is selected
+	            (FDX or HDX).
+	
+	
+	A typical status bar in terminal mode may look like this:
+	
+	----------------------------------------------------------------
+	1> Rcv Log Dir PrScr Send Hangup Level Help Quit 12N81 LG -- FDX
+	----------------------------------------------------------------
+	
+	When HModem II is not in terminal mode, such as when transferring
+	a file or dialing a number, the mode will be indicated on the
+	status bar, along with special instructions, such as "Press ESC
+	to abort".
+	
+	
+	2.3.3  Line Settings
+	
+	In order to use HModem II to communicate with a modem or any
+	other system, you must have the correct line settings.  The
+	eleventh section of the status bar in terminal mode indicates the
+	current line settings with a string such as "24E71".  This means,
+	for example, 2400 bits per second, even parity, 7 data bits, and
+	1 stop bit.  If you are not sure what settings you should use,
+	"12N81" There are three (3) ways in which the current settings
+	can be changed:
+	
+
+
+
+
+	                              - 5 -
+
+
+
+	HModem II
+
+
+
+	1.  The "Configure" function:  When the function key labeled
+	    "Configure" is pressed, the configure utility is called.  The
+	    default line settings are then settable by the user.
+	
+	2.  The "Dial" function:  Whenever the user dials a number from
+	    the dialing directory, the line settings are changed to the
+	    ones listed beside the number in the directory.
+	
+	3.  The "Host" mode:  When the user selects host mode, HModem II
+	    sets the parity to "none", the data bits to 8, and the stop
+	    bit to 1.  HModem II then matches whatever bit rate the
+	    caller is using when a connect is made.  When "Host" mode is
+	    exited, the default line settings are re-established.
+	
+	
+	2.3.4  Help Screens
+	
+	From terminal mode you can get help by pressing the "Help" key. 
+	You can page through the help screens using the up-arrow and
+	down-arrow keys.
+	
+	
+	2.3.5  Exiting HModem II
+	
+	The "Quit" key is used for exiting HModem II.  You will be given
+	a chance to change your mind before the program exits back to
+	CP/M.
+	
+	
+	3  A WORD ABOUT FILE TRANSFER PROTOCOLS
+	
+	First there was Ward Christenson's XMODEM protocol, which became
+	a standard for shareware and public domain file transfer
+	protocols.  It worked quite well on early bulletin board systems
+	although it was a little cumbersome to use and suffered from a
+	vunerability to synchronization errors.  YMODEM was an
+	improvement on XMODEM, offering slightly faster transfer and a
+	little more ease of use.  ZMODEM, developed by Chuck Forsberg on
+	contract to TELENET, was a major step forward, eliminating
+	XMODEM's synchronization problem and minimizing the impact of
+	network delays.  Chuck placed the C source code for ZMODEM in the
+	public domain, which greatly aided me in developing the ZMODEM
+	support for HModem II.
+	
+	HModem II supports all three protocols.  Virtually all bulletin
+	boards support XMODEM.  Many also support YMODEM.  Support for
+	ZMODEM is growing, and I hope it will soon be adopted by all,
+	especially the large networks.
+	
+	
+
+
+
+
+
+
+
+	                              - 6 -
+
+
+
+	HModem II
+
+
+
+	4  THE REST OF THE DOCUMENTATION
+	
+	This program sports a lot of features, and it deserves a manual
+	of about 100 pages.  However, since like most programmers I don't
+	like to write documentation, this is all you will get for now. 
+	My firm conviction is that a good application program does not
+	need much documentation, so I suspect you will not really need
+	the manual if I have done a good job on the program.  If you are
+	new to telecommunications, pick up a good book on the basics or
+	get an experienced friend to help you and you should be able to
+	get along.
+	
+	If you really get stuck, drop a line on GEnie to HMANEY, or via
+	US Mail to the address above.
+	
+	
+	5  CHANGE HISTORY
+	
+	Ver 2.05.05    5 May 88       Original Shareware release
+	    2.06.00   12 May 88       Fixed minor bug in XMODEM transfer.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	                              - 7 -
+
+

@@ -1,0 +1,90 @@
+*************************  HELP for COMMAND LEVEL 1 ****************************
+
+f1 - Receive a file using XMODEM, YMODEM, or ZMODEM protocols.  For XMODEM,
+     the name of the file will be requested from you.  Otherwise, the file
+     name and size are automatically obtained from the sending program.
+     Files received will be stored on the default download disk as specified
+     in the "Configure" function.
+
+f2 - Turn the Log function on or off.  The Log automatically captures all
+     incoming data in terminal mode and saves it to disk under the file name
+     "HMODEM.LOG".  The disk is always the default download disk.  This
+     function can provide a simple ASCII download capability.
+
+f3 - Display the directory of the current default disk.  Use the Level 2
+     "Disk" function to change the default disk.
+
+f4 - Print the data currently showing on the screen.  There will be a pause
+     of several seconds while the H-19 sends its screen contents to the
+     computer.  After this transfer is complete, the H-19 will beep, and
+     terminal mode will be resumed while the printer is printing in the
+     background.
+
+f5 - Send one or more files using ASCII, XMODEM, YMODEM, or ZMODEM protocols.
+     When using ASCII or XMODEM protocols, you can send only one file at a
+     time.  For YMODEM and ZMODEM protocols, you may specifiy a list of file
+     names, separated by spaces, as well as use wild cards ("*" and "?").
+     These files must all reside on the default disk, so do not specify the
+     drive.
+
+The following keys are the same in both Command Levels:
+
+Erase - This key always puts the phone line on hook (hangs it up).  Use it
+        carefully to avoid hanging up accidently.
+
+Blue -  Toggle command level to Level 1 or Level 2.  The effect is to re-
+        define some of the function keys to allow all HModem commands to
+        be accommodated.  The labels on the status bar are also changed.
+
+Red -   Help.  Print this screen.
+
+White -   Exit HModem.  You will be given a chance to change your mind.  
+
+
+
+*************************  HELP for COMMAND LEVEL 2 ****************************
+
+f1 - Dial the telephone.  This functions displays the telephone directory
+     and allows you to dial one or more numbers.  You may enter letters 
+     designating numbers on the list displayed, or you may key in any
+     phone numbers.  If you enter more than one number or letter, they must
+     be separated by commas.  HModem will dial through the list until a
+     connection is made.  If no connection is made, HModem will redial the
+     list indefinitely or until you press the Escape key.
+
+f2 - Enter the HModem Host mode.  You can abort at any time by pressing the
+     Escape key.  There will always be a delay of several seconds when
+     aborting in order to reinitialize the system.  Pressing the Escape key
+     in the Host mode to abort a file transfer will not abort the Host mode
+     until the Escape key is pressed a second time.
+
+f3 - Configure HModem.  This functions calls the overlay "HCONFIG.COM" which
+     must always reside on the disk from which HModem was invoked.  This 
+     utility allows the user to change default parameters and edit the
+     telephone directory and keypad macro library.
+
+f4 - Toggle printer echo on or off.  When on, the letters "PR" appear on the
+     status bar.  All incoming data in terminal mode is spooled to the printer
+     through the printer buffer.  If the printer is too slow for the incoming
+     data, some data may be lost, depending on the size of the print buffer
+     selected by the user under the "Configure" function.
+
+f5 - Disk functions.  This will allow you to change the default disk, swap
+     a disk in any drive, or delete a file.
+
+The following keys are the same in both Command Levels:
+
+Erase - This key always puts the phone line on hook (hangs it up).  Use it
+        carefully to avoid hanging up accidently.
+
+Blue -  Toggle command level to Level 1 or Level 2.  The effect is to re-
+        define some of the function keys to allow all HModem commands to
+        be accommodated.  The labels on the status bar are also changed.
+
+Red -   Help.  Print this screen.
+
+White -   Exit HModem.  You will be given a chance to change your mind.  
+
+***************************  End of HELP Screens *******************************
+
+

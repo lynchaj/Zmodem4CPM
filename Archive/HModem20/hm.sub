@@ -1,0 +1,29 @@
+c80 hm0  hm0.err 
+m80 hm0,=hm0
+c80 hm1
+m80 hm1,=hm1
+c80 hm2
+m80 hm2,=hm2
+c80 hm3
+m80 hm3,=hm3
+c80 hm4
+m80 hm4,=hm4
+c80 hm5
+m80 hm5,=hm5
+c80 hm6
+m80 hm6,=hm6
+c80 hm7
+m80 hm7,=hm7
+c80 hm8
+m80 hm8,=hm8
+c80 hzm
+m80 hzm,=hzm
+l80 hm.com/n,hm0,hm1,hm2,hm3,hm4,hm5,hm6,hm7,hm8,hzm,clib/s/e
+
+c80 hconfig0
+m80 hconfig0,=hconfig0
+c80 hconfig1
+m80 hconfig1,=hconfig1
+l80 hconfig.com/n,hconfig0,hconfig1,clib/s/e
+
+
