@@ -151,12 +151,12 @@ sub_0_1B0:				; CODE XREF: start+6Ep	start+8Fp
 ;ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
 
 loc_0_1C2:				; CODE XREF: start+Aj
-		ld	de, 22Ch
+		ld	de, text22Ch
 		ld	c, 9
 		call	5		; BDOS function 9 (C_WRITESTR) - Output string
 
 loc_0_1CA:				; CODE XREF: start+32j
-		ld	de, 241h
+		ld	de, text241h
 		ld	c, 9
 		call	5		; BDOS function 9 (C_WRITESTR) - Output string
 		jp	0
@@ -250,6 +250,7 @@ text1FDh:
 		.db  0Ah ;  
 		.db  0Ah ;  
 		.db  24h ; $
+text22Ch:
 		.db  73h ; s
 		.db  6Fh ; o
 		.db  72h ; r
@@ -271,6 +272,7 @@ text1FDh:
 		.db  0Dh ;  
 		.db  0Ah ;  
 		.db  24h ; $
+text241h:
 		.db  75h ; u
 		.db  73h ; s
 		.db  61h ; a
