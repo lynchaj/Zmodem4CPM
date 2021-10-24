@@ -9,14 +9,13 @@
 
 ; File Name			  C:\RZ.COM
 ; Format			  COM File
-; Base Address:	1000h Range: 10100h - 11800h Loaded length: 1700h
+; Base Address:	0000h Range: 0100h - 1800h Loaded length: 1700h
 
 ; Processor:	    z80
 ; Target assembler: Table Driven Assembler (TASM) by Speech Technology Inc.
 
 ;----------------------------------------------------------------------------
 
-; segment 'seg000'
 		.org 100h
 
 
@@ -5554,8 +5553,5 @@ word_0_17A2:	.dw 0			; DATA XREF: start+88w	sub_0_961+7Fw
 		.db    0 ;  
 		.db    0 ;  
 		.db    0 ;  
-
-; end of 'seg000'
-
 
 		.end	; start
