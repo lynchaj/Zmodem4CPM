@@ -7,6 +7,6 @@ rem tasm -t80 -b -f00 rz_yazd.asm rz_yazd.com
 rem tasm -t80 -b -f00 sz_yazd.asm sz_yazd.com
 
 rem compare rz.com to RZ_IDA.COM goes here
-fc rz.com RZ_IDA.COM
+fc /B rz.com RZ_IDA.COM
 rem compare sz.com to SZ_IDA.COM goes here
-fc sz.com SZ_IDA.COM
+fc /B sz.com SZ_IDA.COM
