@@ -848,12 +848,13 @@ sub_0_482:				; CODE XREF: sub_0_1289+122p
 		ld	a, (2D04h)
 		ld	de, 495h
 		call	sub_0_16E7
-		ld	de, 493h
+		ld	de, text493h
 		ld	c, 9
 		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
 ; End of function sub_0_482
 
 ;ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+text493h:
 		.db  0Dh ;  
 		.db  0Ah ;  
 		.db    0 ;  
@@ -896,7 +897,7 @@ sub_0_4A4:				; CODE XREF: sub_0_961+82p
 		call	sub_0_16E7
 		ld	a, 24h
 		ld	(byte_0_507), a
-		ld	de, 4F2h
+		ld	de, text4F2h
 		ld	c, 9
 		call	5		; BDOS function 9 (C_WRITESTR) - Output string
 		ld	hl, (2CD4h)
@@ -910,12 +911,13 @@ sub_0_4A4:				; CODE XREF: sub_0_961+82p
 		ld	de, (2CD4h)
 		ld	c, 9
 		call	5		; BDOS function 9 (C_WRITESTR) - Output string
-		ld	de, 508h
+		ld	de, text508h
 		ld	c, 9
 		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
 ; End of function sub_0_4A4
 
 ;ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+text4F2h:
 		.db  0Dh ;  
 		.db  0Ah ;  
 byte_0_4F4:	.db 0			; DATA XREF: sub_0_4A4+17w
@@ -938,6 +940,7 @@ byte_0_4F4:	.db 0			; DATA XREF: sub_0_4A4+17w
 		.db    0 ;  
 		.db  20h ;  
 byte_0_507:	.db 0			; DATA XREF: sub_0_4A4+24w
+text508h:
 		.db  0Dh ;  
 		.db  0Ah ;  
 		.db  24h ; $
@@ -952,12 +955,13 @@ sub_0_50B:				; CODE XREF: sub_0_D0Ep sub_0_D30+30p
 		ld	de, 51Fh
 		call	loc_0_774
 		ld	(hl), 24h
-		ld	de, 51Eh
+		ld	de, text51Eh
 		ld	c, 9
 		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
 ; End of function sub_0_50B
 
 ;ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+text51Eh:
 		.db  0Dh ;  
 		.db    0 ;  
 		.db    0 ;  
@@ -1016,12 +1020,13 @@ sub_0_50B:				; CODE XREF: sub_0_D0Ep sub_0_D30+30p
 ;		S u b r	o u t i	n e
 
 sub_0_552:				; CODE XREF: seg000:0A2Ep
-		ld	de, 55Ah
+		ld	de, text55Ah
 		ld	c, 9
 		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
 ; End of function sub_0_552
 
 ;ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+text55Ah:
 		.db  46h ; F
 		.db  69h ; i
 		.db  6Ch ; l
