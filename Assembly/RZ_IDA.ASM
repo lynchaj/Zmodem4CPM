@@ -728,7 +728,7 @@ sub_0_3EF:				; CODE XREF: start+7Cp
 		ld	(byte_0_464), a
 		ld	c, 31h
 		ld	de, 45Fh
-		call	5
+		call	5		; BDOS function 49 (S_SYSVAR) - Access the system variables
 		ld	a, h
 		cpl	
 		ld	h, a
@@ -738,7 +738,7 @@ sub_0_3EF:				; CODE XREF: start+7Cp
 		ld	(word_0_46F), hl
 		ld	c, 31h
 		ld	de, 463h
-		call	5
+		call	5		; BDOS function 49 (S_SYSVAR) - Access the system variables
 		ld	(word_0_46B), hl
 		ld	de, (word_0_46F)
 		ld	a, h
@@ -750,7 +750,7 @@ sub_0_3EF:				; CODE XREF: start+7Cp
 		ld	(word_0_465), hl
 		ld	c, 31h
 		ld	de, 467h
-		call	5
+		call	5		; BDOS function 49 (S_SYSVAR) - Access the system variables
 		ld	(word_0_46D), hl
 		ld	de, (word_0_46F)
 		ld	a, h
@@ -766,12 +766,12 @@ loc_0_437:				; CODE XREF: sub_0_451+Cj
 		ld	(byte_0_464), a
 		ld	de, 463h
 		ld	c, 31h
-		call	5
+		call	5		; BDOS function 49 (S_SYSVAR) - Access the system variables
 		ld	a, 0FEh
 		ld	(byte_0_468), a
 		ld	de, 467h
 		ld	c, 31h
-		jp	5
+		jp	5		; BDOS function 49 - Access the System Control Block
 ; End of function sub_0_3EF
 
 
@@ -850,7 +850,7 @@ sub_0_482:				; CODE XREF: sub_0_1289+122p
 		call	sub_0_16E7
 		ld	de, 493h
 		ld	c, 9
-		jp	5
+		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
 ; End of function sub_0_482
 
 ;ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
@@ -898,7 +898,7 @@ sub_0_4A4:				; CODE XREF: sub_0_961+82p
 		ld	(byte_0_507), a
 		ld	de, 4F2h
 		ld	c, 9
-		call	5
+		call	5		; BDOS function 9 (C_WRITESTR) - Output string
 		ld	hl, (2CD4h)
 		ld	a, h
 		or	l
@@ -909,10 +909,10 @@ sub_0_4A4:				; CODE XREF: sub_0_961+82p
 		ld	(hl), 24h
 		ld	de, (2CD4h)
 		ld	c, 9
-		call	5
+		call	5		; BDOS function 9 (C_WRITESTR) - Output string
 		ld	de, 508h
 		ld	c, 9
-		jp	5
+		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
 ; End of function sub_0_4A4
 
 ;ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
@@ -954,7 +954,7 @@ sub_0_50B:				; CODE XREF: sub_0_D0Ep sub_0_D30+30p
 		ld	(hl), 24h
 		ld	de, 51Eh
 		ld	c, 9
-		jp	5
+		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
 ; End of function sub_0_50B
 
 ;ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
@@ -1018,7 +1018,7 @@ sub_0_50B:				; CODE XREF: sub_0_D0Ep sub_0_D30+30p
 sub_0_552:				; CODE XREF: seg000:0A2Ep
 		ld	de, 55Ah
 		ld	c, 9
-		jp	5
+		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
 ; End of function sub_0_552
 
 ;ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
@@ -1088,11 +1088,11 @@ sub_0_588:				; CODE XREF: sub_0_588+1Fj
 		sbc	hl, de
 		jr	z, loc_0_5A9
 		ld	c, 7
-		call	5
+		call	5		; BDOS function 7 (A_STATIN) - Auxiliary Input status
 		or	a
 		jr	z, loc_0_5A9
 		ld	c, 3
-		call	5
+		call	5		; BDOS function 3 (A_READ) - Auxiliary (Reader) input
 		ld	c, a
 		ld	hl, 1808h
 		call	sub_0_61C
@@ -1142,7 +1142,7 @@ sub_0_5B4:				; CODE XREF: sub_0_5D4+12p
 
 sub_0_5CD:				; CODE XREF: seg000:1462p
 		ld	c, 8
-		call	5
+		call	5		; BDOS function 8 (A_STATOUT) - Auxiliary Output status
 		or	a
 		ret	
 ; End of function sub_0_5CD
@@ -1330,8 +1330,8 @@ sub_0_654:				; CODE XREF: seg000:0AAEp
 
 ;ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
 		.db  3Eh ; >
-		.db  80h ; 
-		.db  96h ; 
+		.db  80h ; ?
+		.db  96h ; ?
 		.db 0C8h ; È
 		.db  34h ; 4
 		.db  23h ; #
@@ -1450,7 +1450,7 @@ loc_0_697:				; CODE XREF: sub_0_688+8j
 		.db    6 ;  
 		.db    4 ;  
 		.db  1Ah ;  
-		.db  9Eh ; 
+		.db  9Eh ; ?
 		.db  13h ;  
 		.db  23h ; #
 		.db  10h ;  
@@ -1543,7 +1543,7 @@ loc_0_702:				; CODE XREF: sub_0_6FA+11j
 		.db 0E5h ; å
 		.db  3Eh ; >
 		.db    1 ;  
-		.db  86h ; 
+		.db  86h ; ?
 		.db  77h ; w
 		.db  30h ; 0
 		.db    9 ;  
@@ -1552,7 +1552,7 @@ loc_0_702:				; CODE XREF: sub_0_6FA+11j
 		.db  23h ; #
 		.db  3Eh ; >
 		.db    0 ;  
-		.db  8Eh ; 
+		.db  8Eh ; ?
 		.db  77h ; w
 		.db  10h ;  
 		.db 0F9h ; ù
@@ -1611,22 +1611,22 @@ loc_0_731:				; CODE XREF: sub_0_729+Dj
 		.db 0C9h ; É
 		.db    0 ;  
 		.db 0CAh ; Ê
-		.db  9Ah ; 
+		.db  9Ah ; ?
 		.db  3Bh ; ;
 		.db    0 ;  
 		.db 0E1h ; á
 		.db 0F5h ; õ
 		.db    5 ;  
-		.db  80h ; 
-		.db  96h ; 
-		.db  98h ; 
+		.db  80h ; ?
+		.db  96h ; ?
+		.db  98h ; ?
 		.db    0 ;  
 		.db  40h ; @
 		.db  42h ; B
 		.db  0Fh ;  
 		.db    0 ;  
-		.db 0A0h ;  
-		.db  86h ; 
+		.db 0A0h ;  
+		.db  86h ; ?
 		.db    1 ;  
 		.db    0 ;  
 		.db  10h ;  
@@ -1708,7 +1708,7 @@ word_0_7BF:	.dw 0			; DATA XREF: seg000:0774w
 		.db  20h ;  
 		.db 0B9h ; ¹
 		.db  3Ah ; :
-		.db  91h ; 
+		.db  91h ; ?
 		.db  28h ; (
 		.db 0E6h ; æ
 		.db  0Fh ;  
@@ -1731,7 +1731,7 @@ byte_0_7DF:	.db 0			; DATA XREF: sub_0_8A0+3w
 		.db 0F1h ; ñ
 		.db 0C9h ; É
 		.db  20h ;  
-		.db  83h ; 
+		.db  83h ; ?
 		.db 0B8h ; ¸
 		.db 0EDh ; í
 		.db 0E3h ; ã
@@ -1744,7 +1744,7 @@ byte_0_7DF:	.db 0			; DATA XREF: sub_0_8A0+3w
 word_0_7F0:	.dw 289Dh		; DATA XREF: sub_0_825+2r
 		.db 0DDh ; Ý
 		.db  21h ; !
-		.db  99h ; 
+		.db  99h ; ?
 		.db  28h ; (
 		.db 0DDh ; Ý
 		.db 0AEh ; ®
@@ -1891,7 +1891,7 @@ word_0_887:	.dw 0			; DATA XREF: sub_0_8A0+6w sub_0_13BA+2Er
 		.db  10h ;  
 		.db 0F5h ; õ
 		.db  22h ; "
-		.db  87h ; 
+		.db  87h ; ?
 		.db    8 ;  
 		.db 0F1h ; ñ
 		.db 0C9h ; É
@@ -2182,10 +2182,10 @@ loc_0_A35:				; CODE XREF: seg000:0A20j
 loc_0_A43:				; CODE XREF: seg000:0A3Aj
 		ld	de, 2811h
 		ld	c, 1Ah
-		call	5
+		call	5		; BDOS function 26 (F_DMAOFF) - Set DMA address
 		ld	e, 1
 		ld	c, 2Ch
-		call	5
+		call	5		; BDOS function 44 (F_MULTISEC) - Set number of records to read/write at once
 		ld	de, 17A3h
 		ld	c, 0Fh
 		call	sub_0_471
@@ -2310,7 +2310,7 @@ byte_0_B0A:	.db 1			; DATA XREF: sub_0_8D1+3Dw
 		.db 0D1h ; Ñ
 		.db  0Fh ;  
 		.db  21h ; !
-		.db  96h ; 
+		.db  96h ; ?
 		.db  0Bh ;  
 		.db    1 ;  
 		.db  0Ah ;  
@@ -2325,7 +2325,7 @@ byte_0_B0A:	.db 1			; DATA XREF: sub_0_8D1+3Dw
 		.db  2Dh ; -
 		.db  34h ; 4
 		.db 0CDh ; Í
-		.db  82h ; 
+		.db  82h ; ?
 		.db    4 ;  
 		.db 0C1h ; Á
 		.db  10h ;  
@@ -2339,7 +2339,7 @@ byte_0_B0A:	.db 1			; DATA XREF: sub_0_8D1+3Dw
 		.db 0C9h ; É
 		.db 0C1h ; Á
 		.db 0CDh ; Í
-		.db  9Bh ; 
+		.db  9Bh ; ?
 		.db  0Dh ;  
 		.db  3Eh ; >
 		.db  0Fh ;  
@@ -2348,7 +2348,7 @@ byte_0_B0A:	.db 1			; DATA XREF: sub_0_8D1+3Dw
 		.db 0E0h ; à
 		.db  2Ch ; ,
 		.db 0CDh ; Í
-		.db  88h ; 
+		.db  88h ; ?
 		.db    6 ;  
 		.db  18h ;  
 		.db  20h ;  
@@ -2387,7 +2387,7 @@ byte_0_B0A:	.db 1			; DATA XREF: sub_0_8D1+3Dw
 		.db 0E0h ; à
 		.db  2Ch ; ,
 		.db 0CDh ; Í
-		.db  88h ; 
+		.db  88h ; ?
 		.db    6 ;  
 		.db 0F1h ; ñ
 		.db 0CDh ; Í
@@ -2403,10 +2403,10 @@ byte_0_B0A:	.db 1			; DATA XREF: sub_0_8D1+3Dw
 		.db 0A7h ; §
 		.db  2Ch ; ,
 		.db  11h ;  
-		.db  9Fh ; 
+		.db  9Fh ; ?
 		.db  2Ch ; ,
 		.db 0CDh ; Í
-		.db  92h ; 
+		.db  92h ; ?
 		.db    6 ;  
 		.db  3Eh ; >
 		.db    1 ;  
@@ -2535,7 +2535,7 @@ loc_0_BE9:				; CODE XREF: sub_0_BD3+Ej
 		.db  2Dh ; -
 		.db  34h ; 4
 		.db 0CDh ; Í
-		.db  82h ; 
+		.db  82h ; ?
 		.db    4 ;  
 		.db  21h ; !
 		.db    4 ;  
@@ -2594,7 +2594,7 @@ loc_0_BE9:				; CODE XREF: sub_0_BD3+Ej
 		.db  2Dh ; -
 		.db  34h ; 4
 		.db 0CDh ; Í
-		.db  82h ; 
+		.db  82h ; ?
 		.db    4 ;  
 		.db  21h ; !
 		.db    4 ;  
@@ -2673,19 +2673,19 @@ loc_0_BE9:				; CODE XREF: sub_0_BD3+Ej
 		.db 0BAh ; º
 		.db  0Fh ;  
 		.db 0CDh ; Í
-		.db  97h ; 
+		.db  97h ; ?
 		.db  0Ch ;  
 		.db 0C3h ; Ã
 		.db  0Ah ;  
 		.db  0Ch ;  
 		.db 0CDh ; Í
-		.db  97h ; 
+		.db  97h ; ?
 		.db  0Ch ;  
 		.db 0C3h ; Ã
 		.db  7Fh ; 
 		.db  0Ch ;  
 		.db 0CDh ; Í
-		.db  97h ; 
+		.db  97h ; ?
 		.db  0Ch ;  
 		.db  21h ; !
 		.db 0ABh ; «
@@ -2694,7 +2694,7 @@ loc_0_BE9:				; CODE XREF: sub_0_BD3+Ej
 		.db 0E0h ; à
 		.db  2Ch ; ,
 		.db 0CDh ; Í
-		.db  92h ; 
+		.db  92h ; ?
 		.db    6 ;  
 		.db  3Eh ; >
 		.db    3 ;  
@@ -2705,7 +2705,7 @@ loc_0_BE9:				; CODE XREF: sub_0_BD3+Ej
 		.db  7Fh ; 
 		.db  0Ch ;  
 		.db 0CDh ; Í
-		.db  97h ; 
+		.db  97h ; ?
 		.db  0Ch ;  
 		.db 0CDh ; Í
 		.db  30h ; 0
@@ -2720,7 +2720,7 @@ loc_0_BE9:				; CODE XREF: sub_0_BD3+Ej
 		.db 0E0h ; à
 		.db  2Ch ; ,
 		.db 0CDh ; Í
-		.db  92h ; 
+		.db  92h ; ?
 		.db    6 ;  
 		.db  3Eh ; >
 		.db    3 ;  
@@ -2758,7 +2758,7 @@ loc_0_BE9:				; CODE XREF: sub_0_BD3+Ej
 		.db 0FFh ; ÿ
 		.db 0FEh ; þ
 		.db  10h ;  
-		.db  93h ; 
+		.db  93h ; ?
 		.db  0Ch ;  
 		.db  1Ch ;  
 		.db  0Ch ;  
@@ -2901,7 +2901,7 @@ byte_0_D6F:	.db 0			; DATA XREF: seg000:0D68w
 		.db 0E0h ; à
 		.db  2Ch ; ,
 		.db 0CDh ; Í
-		.db  88h ; 
+		.db  88h ; ?
 		.db    6 ;  
 		.db    6 ;  
 		.db    4 ;  
@@ -3169,17 +3169,17 @@ loc_0_E03:				; CODE XREF: sub_0_DE7+14j
 		.db  3Eh ; >
 		.db 0FFh ; ÿ
 		.db 0F6h ; ö
-		.db  80h ; 
+		.db  80h ; ?
 		.db  37h ; 7
 		.db 0C9h ; É
 		.db  11h ;  
-		.db  91h ; 
+		.db  91h ; ?
 		.db  13h ;  
-		.db  93h ; 
+		.db  93h ; ?
 		.db  11h ;  
-		.db  91h ; 
+		.db  91h ; ?
 		.db  13h ;  
-		.db  93h ; 
+		.db  93h ; ?
 		.db  18h ;  
 		.db  68h ; h
 		.db  69h ; i
@@ -3187,19 +3187,19 @@ loc_0_E03:				; CODE XREF: sub_0_DE7+14j
 		.db  6Bh ; k
 		.db  6Ch ; l
 		.db  6Dh ; m
-		.db  99h ; 
+		.db  99h ; ?
 		.db  0Eh ;  
-		.db  96h ; 
+		.db  96h ; ?
 		.db  0Eh ;  
-		.db  9Eh ; 
+		.db  9Eh ; ?
 		.db  0Eh ;  
-		.db  9Eh ; 
+		.db  9Eh ; ?
 		.db  0Eh ;  
-		.db  9Eh ; 
+		.db  9Eh ; ?
 		.db  0Eh ;  
-		.db  9Eh ; 
+		.db  9Eh ; ?
 		.db  0Eh ;  
-		.db  9Eh ; 
+		.db  9Eh ; ?
 		.db  0Eh ;  
 		.db  50h ; P
 		.db  0Eh ;  
@@ -3223,7 +3223,7 @@ loc_0_E03:				; CODE XREF: sub_0_DE7+14j
 		.db  4Eh ; N
 		.db  0Fh ;  
 		.db 0CDh ; Í
-		.db 0A0h ;  
+		.db 0A0h ;  
 		.db    8 ;  
 		.db  21h ; !
 		.db    0 ;  
@@ -3244,7 +3244,7 @@ loc_0_E03:				; CODE XREF: sub_0_DE7+14j
 		.db 0EDh ; í
 		.db    7 ;  
 		.db 0C4h ; Ä
-		.db  85h ; 
+		.db  85h ; ?
 		.db    8 ;  
 		.db  2Ah ; *
 		.db 0EBh ; ë
@@ -3284,7 +3284,7 @@ loc_0_E03:				; CODE XREF: sub_0_DE7+14j
 		.db 0E9h ; é
 		.db 0EAh ; ê
 		.db 0EBh ; ë
-		.db  98h ; 
+		.db  98h ; ?
 		.db 0FFh ; ÿ
 		.db 0FEh ; þ
 		.db  52h ; R
@@ -3305,7 +3305,7 @@ loc_0_E03:				; CODE XREF: sub_0_DE7+14j
 		.db 0E9h ; é
 		.db 0EAh ; ê
 		.db 0EBh ; ë
-		.db  98h ; 
+		.db  98h ; ?
 		.db 0FFh ; ÿ
 		.db 0FEh ; þ
 		.db  52h ; R
@@ -3360,7 +3360,7 @@ loc_0_E03:				; CODE XREF: sub_0_DE7+14j
 		.db 0E6h ; æ
 		.db  7Fh ; 
 		.db 0CDh ; Í
-		.db  85h ; 
+		.db  85h ; ?
 		.db    8 ;  
 		.db    6 ;  
 		.db    2 ;  
@@ -3369,7 +3369,7 @@ loc_0_E03:				; CODE XREF: sub_0_DE7+14j
 		.db  2Fh ; /
 		.db  0Eh ;  
 		.db 0CDh ; Í
-		.db  85h ; 
+		.db  85h ; ?
 		.db    8 ;  
 		.db 0C1h ; Á
 		.db 0DAh ; Ú
@@ -3414,7 +3414,7 @@ loc_0_E03:				; CODE XREF: sub_0_DE7+14j
 		.db  10h ;  
 		.db 0F3h ; ó
 		.db  21h ; !
-		.db  99h ; 
+		.db  99h ; ?
 		.db  28h ; (
 		.db  11h ;  
 		.db 0E9h ; é
@@ -3430,7 +3430,7 @@ loc_0_E03:				; CODE XREF: sub_0_DE7+14j
 		.db  0Fh ;  
 		.db  5Fh ; _
 		.db  3Ah ; :
-		.db  9Eh ; 
+		.db  9Eh ; ?
 		.db  2Ch ; ,
 		.db 0FEh ; þ
 		.db  20h ;  
@@ -3510,7 +3510,7 @@ loc_0_FDB:				; CODE XREF: sub_0_FD1+61j
 		.db  3Eh ; >
 		.db  10h ;  
 		.db 0CAh ; Ê
-		.db  8Ah ; 
+		.db  8Ah ; ?
 		.db  10h ;  
 		.db    6 ;  
 		.db  0Ah ;  
@@ -3539,7 +3539,7 @@ loc_0_FDB:				; CODE XREF: sub_0_FD1+61j
 		.db  3Eh ; >
 		.db  10h ;  
 		.db 0CAh ; Ê
-		.db  8Ah ; 
+		.db  8Ah ; ?
 		.db  10h ;  
 		.db  18h ;  
 		.db 0C3h ; Ã
@@ -3565,7 +3565,7 @@ loc_0_1024:				; CODE XREF: sub_0_FD1+22j
 		.db  3Eh ; >
 		.db 0FFh ; ÿ
 		.db 0C3h ; Ã
-		.db  8Ah ; 
+		.db  8Ah ; ?
 		.db  10h ;  
 		.db  3Eh ; >
 		.db    5 ;  
@@ -3611,7 +3611,7 @@ loc_0_1024:				; CODE XREF: sub_0_FD1+22j
 		.db  3Eh ; >
 		.db  10h ;  
 		.db  32h ; 2
-		.db  9Eh ; 
+		.db  9Eh ; ?
 		.db  2Ch ; ,
 		.db 0CDh ; Í
 		.db  3Fh ; ?
@@ -3621,7 +3621,7 @@ loc_0_1024:				; CODE XREF: sub_0_FD1+22j
 		.db  3Eh ; >
 		.db  10h ;  
 		.db  32h ; 2
-		.db  9Eh ; 
+		.db  9Eh ; ?
 		.db  2Ch ; ,
 		.db 0CDh ; Í
 		.db    0 ;  
@@ -3631,7 +3631,7 @@ loc_0_1024:				; CODE XREF: sub_0_FD1+22j
 		.db  3Eh ; >
 		.db  20h ;  
 		.db  32h ; 2
-		.db  9Eh ; 
+		.db  9Eh ; ?
 		.db  2Ch ; ,
 		.db 0CDh ; Í
 		.db 0C5h ; Å
@@ -3644,7 +3644,7 @@ loc_0_1024:				; CODE XREF: sub_0_FD1+22j
 		.db 0E4h ; ä
 		.db  2Ch ; ,
 		.db 0CDh ; Í
-		.db  92h ; 
+		.db  92h ; ?
 		.db    6 ;  
 		.db 0F1h ; ñ
 ;ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
@@ -3703,14 +3703,14 @@ loc_0_109C:				; CODE XREF: sub_0_FD1+C1j
 		.db  10h ;  
 		.db  77h ; w
 		.db  10h ;  
-		.db  98h ; 
+		.db  98h ; ?
 		.db    6 ;  
 		.db  10h ;  
 		.db 0FFh ; ÿ
 		.db 0FEh ; þ
 		.db 0FCh ; ü
 		.db 0CDh ; Í
-		.db 0A0h ;  
+		.db 0A0h ;  
 		.db    8 ;  
 		.db 0CDh ; Í
 		.db  2Fh ; /
@@ -3756,7 +3756,7 @@ loc_0_109C:				; CODE XREF: sub_0_FD1+C1j
 		.db  10h ;  
 		.db 0F5h ; õ
 		.db  21h ; !
-		.db  99h ; 
+		.db  99h ; ?
 		.db  28h ; (
 		.db  11h ;  
 		.db 0E9h ; é
@@ -3769,7 +3769,7 @@ loc_0_109C:				; CODE XREF: sub_0_FD1+C1j
 		.db  18h ;  
 		.db  3Bh ; ;
 		.db 0CDh ; Í
-		.db 0A0h ;  
+		.db 0A0h ;  
 		.db    8 ;  
 		.db 0CDh ; Í
 		.db  2Fh ; /
@@ -3779,7 +3779,7 @@ loc_0_109C:				; CODE XREF: sub_0_FD1+C1j
 		.db    1 ;  
 		.db  2Dh ; -
 		.db 0CDh ; Í
-		.db  85h ; 
+		.db  85h ; ?
 		.db    8 ;  
 		.db  21h ; !
 		.db 0A7h ; §
@@ -3792,7 +3792,7 @@ loc_0_109C:				; CODE XREF: sub_0_FD1+C1j
 		.db  2Fh ; /
 		.db  0Eh ;  
 		.db 0CDh ; Í
-		.db  85h ; 
+		.db  85h ; ?
 		.db    8 ;  
 		.db 0E1h ; á
 		.db 0C1h ; Á
@@ -3808,7 +3808,7 @@ loc_0_109C:				; CODE XREF: sub_0_FD1+C1j
 		.db  2Fh ; /
 		.db  0Eh ;  
 		.db 0CDh ; Í
-		.db  85h ; 
+		.db  85h ; ?
 		.db    8 ;  
 		.db 0C1h ; Á
 		.db 0D8h ; Ø
@@ -3832,17 +3832,17 @@ loc_0_109C:				; CODE XREF: sub_0_FD1+C1j
 		.db  37h ; 7
 		.db 0C9h ; É
 		.db 0CDh ; Í
-		.db 0A0h ;  
+		.db 0A0h ;  
 		.db    8 ;  
 		.db 0CDh ; Í
-		.db  94h ; 
+		.db  94h ; ?
 		.db  11h ;  
 		.db 0D8h ; Ø
 		.db  32h ; 2
 		.db    1 ;  
 		.db  2Dh ; -
 		.db 0CDh ; Í
-		.db  85h ; 
+		.db  85h ; ?
 		.db    8 ;  
 		.db  21h ; !
 		.db 0A7h ; §
@@ -3852,7 +3852,7 @@ loc_0_109C:				; CODE XREF: sub_0_FD1+C1j
 		.db 0C5h ; Å
 		.db 0E5h ; å
 		.db 0CDh ; Í
-		.db  94h ; 
+		.db  94h ; ?
 		.db  11h ;  
 		.db  30h ; 0
 		.db    3 ;  
@@ -3860,7 +3860,7 @@ loc_0_109C:				; CODE XREF: sub_0_FD1+C1j
 		.db 0C1h ; Á
 		.db 0C9h ; É
 		.db 0CDh ; Í
-		.db  85h ; 
+		.db  85h ; ?
 		.db    8 ;  
 		.db 0E1h ; á
 		.db 0C1h ; Á
@@ -3872,14 +3872,14 @@ loc_0_109C:				; CODE XREF: sub_0_FD1+C1j
 		.db    2 ;  
 		.db 0C5h ; Å
 		.db 0CDh ; Í
-		.db  94h ; 
+		.db  94h ; ?
 		.db  11h ;  
 		.db  30h ; 0
 		.db    2 ;  
 		.db 0C1h ; Á
 		.db 0C9h ; É
 		.db 0CDh ; Í
-		.db  85h ; 
+		.db  85h ; ?
 		.db    8 ;  
 		.db 0C1h ; Á
 		.db  10h ;  
@@ -4141,7 +4141,7 @@ loc_0_1296:				; CODE XREF: sub_0_1289+12Aj
 		.db  18h ;  
 		.db    3 ;  
 		.db  21h ; !
-		.db  80h ; 
+		.db  80h ; ?
 		.db    0 ;  
 		.db  22h ; "
 		.db    5 ;  
@@ -4173,7 +4173,7 @@ loc_0_1296:				; CODE XREF: sub_0_1289+12Aj
 		.db  7Ah ; z
 		.db  13h ;  
 		.db 0CDh ; Í
-		.db 0A0h ;  
+		.db 0A0h ;  
 		.db    8 ;  
 		.db 0DDh ; Ý
 		.db  2Ah ; *
@@ -4203,7 +4203,7 @@ loc_0_1296:				; CODE XREF: sub_0_1289+12Aj
 		.db 0DDh ; Ý
 		.db    7 ;  
 		.db 0CDh ; Í
-		.db  85h ; 
+		.db  85h ; ?
 		.db    8 ;  
 		.db 0EDh ; í
 		.db  4Bh ; K
@@ -4243,7 +4243,7 @@ loc_0_1296:				; CODE XREF: sub_0_1289+12Aj
 		.db  7Ah ; z
 		.db  13h ;  
 		.db  3Ah ; :
-		.db  9Eh ; 
+		.db  9Eh ; ?
 		.db  2Ch ; ,
 		.db 0FEh ; þ
 		.db  10h ;  
@@ -4253,7 +4253,7 @@ loc_0_1296:				; CODE XREF: sub_0_1289+12Aj
 		.db    8 ;  
 		.db  2Dh ; -
 		.db 0CDh ; Í
-		.db  85h ; 
+		.db  85h ; ?
 		.db    8 ;  
 		.db    6 ;  
 		.db  0Ah ;  
@@ -4267,7 +4267,7 @@ loc_0_1296:				; CODE XREF: sub_0_1289+12Aj
 		.db  7Ah ; z
 		.db  13h ;  
 		.db 0CDh ; Í
-		.db  85h ; 
+		.db  85h ; ?
 		.db    8 ;  
 		.db  7Ch ; |
 		.db 0B5h ; µ
@@ -4294,7 +4294,7 @@ loc_0_1296:				; CODE XREF: sub_0_1289+12Aj
 		.db  3Ah ; :
 		.db 0DFh ; ß
 		.db    7 ;  
-		.db  95h ; 
+		.db  95h ; ?
 		.db  28h ; (
 		.db 0E9h ; é
 		.db 0C3h ; Ã
@@ -4530,9 +4530,9 @@ byte_0_1468:	.db 0			; DATA XREF: seg000:145Cw
 		.db  10h ;  
 		.db  90h ; 
 		.db  11h ;  
-		.db  91h ; 
+		.db  91h ; ?
 		.db  13h ;  
-		.db  93h ; 
+		.db  93h ; ?
 		.db  50h ; P
 		.db  14h ;  
 		.db  50h ; P
@@ -5554,4 +5554,3 @@ word_0_17A2:	.dw 0			; DATA XREF: start+88w	sub_0_961+7Fw
 
 
 		.end	; start
-
