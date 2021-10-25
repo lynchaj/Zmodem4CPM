@@ -14,24 +14,28 @@
 ; Processor:	    z80
 ; Target assembler: Table Driven Assembler (TASM) by Speech Technology Inc.
 
+bdos		.equ	0005h
+
+A_READ		.equ	3
+A_STATIN	.equ	7
+C_WRITESTR	.equ	9
+S_BDOSVER	.equ	12
+DRV_SET		.equ	14
+F_USERNUM	.equ	32
+S_SYSVAR	.equ	49
+	
 ;----------------------------------------------------------------------------
 
-		.org 100h
+		.org	100h
 
-
-;----------------------------------------------------------------------------
-
-;		S u b r	o u t i	n e
-
-start:
-		ld	sp, 1808h
-		ld	c, 0Ch
-		call	5		; BDOS function 12 (S_BDOSVER) - Return version number
+start:		ld	sp, 1808h
+		ld	c, S_BDOSVER
+		call	bdos		; Return version number
 		cp	30h
 		jp	c, loc_0_1C2
 		ld	de, text1D5h
-		ld	c, 9
-		call	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		call	bdos		; Output string
 		call	sub_0_195
 		ld	hl, (word_0_179E)
 		xor	a
@@ -90,8 +94,8 @@ loc_0_164:				; CODE XREF: start+5Ej
 loc_0_174:				; CODE XREF: start+25j	start+3Bj
 					; ...
 		ld	de, text1FDh
-		ld	c, 9
-		call	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		call	bdos		; Output string
 		call	sub_0_3EF
 		call	sub_0_8D1
 		call	sub_0_451
@@ -138,485 +142,46 @@ sub_0_1B0:				; CODE XREF: start+6Ep	start+8Fp
 		dec	de
 		ld	a, (de)
 		ld	e, a
-		ld	c, 20h
-		call	5		; BDOS function 32 (F_USERNUM) - get/set user number
+		ld	c, F_USERNUM
+		call	bdos		; get/set user number
 		pop	af
 		dec	a
 		ld	e, a
-		ld	c, 0Eh
-		jp	5		; BDOS function 14 (DRV_SET) - Select disc
+		ld	c, DRV_SET
+		jp	5		; Select disc
 ; End of function sub_0_1B0
 
 ;----------------------------------------------------------------------------
 
 loc_0_1C2:				; CODE XREF: start+Aj
 		ld	de, text22Ch
-		ld	c, 9
-		call	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		call	bdos		; Output string
 
 loc_0_1CA:				; CODE XREF: start+32j
 		ld	de, text241h
-		ld	c, 9
-		call	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		call	bdos		; Output string
 		jp	0
 ;----------------------------------------------------------------------------
 text1D5h:
-		.db  52h ; R
-		.db  5Ah ; Z
-		.db  20h ;  
-		.db  66h ; f
-		.db  6Fh ; o
-		.db  72h ; r
-		.db  20h ;  
-		.db  43h ; C
-		.db  50h ; P
-		.db  2Fh ; /
-		.db  4Dh ; M
-		.db  20h ;  
-		.db  33h ; 3
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  56h ; V
-		.db  20h ;  
-		.db  31h ; 1
-		.db  2Eh ; .
-		.db  30h ; 0
-		.db  34h ; 4
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  28h ; (
-		.db  43h ; C
-		.db  29h ; )
-		.db  20h ;  
-		.db  39h ; 9
-		.db  32h ; 2
-		.db  20h ;  
-		.db  77h ; w
-		.db  73h ; s
-		.db  68h ; h
-		.db  62h ; b
-		.db  67h ; g
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  0Ah ;  
-		.db  24h ; $
+		.db  'RZ for CP/M 3   V1.04/r/n'
+		.db  '(C) 92 wshbg/r/n/n$'
 text1FDh:		
-		.db  73h ; s
-		.db  74h ; t
-		.db  61h ; a
-		.db  72h ; r
-		.db  74h ; t
-		.db  20h ;  
-		.db  79h ; y
-		.db  6Fh ; o
-		.db  75h ; u
-		.db  72h ; r
-		.db  20h ;  
-		.db  6Ch ; l
-		.db  6Fh ; o
-		.db  63h ; c
-		.db  61h ; a
-		.db  6Ch ; l
-		.db  20h ;  
-		.db  58h ; X
-		.db  2Fh ; /
-		.db  59h ; Y
-		.db  2Fh ; /
-		.db  5Ah ; Z
-		.db  4Dh ; M
-		.db  6Fh ; o
-		.db  64h ; d
-		.db  65h ; e
-		.db  6Dh ; m
-		.db  20h ;  
-		.db  73h ; s
-		.db  65h ; e
-		.db  6Eh ; n
-		.db  64h ; d
-		.db  69h ; i
-		.db  6Eh ; n
-		.db  67h ; g
-		.db  20h ;  
-		.db  70h ; p
-		.db  72h ; r
-		.db  6Fh ; o
-		.db  67h ; g
-		.db  72h ; r
-		.db  61h ; a
-		.db  6Dh ; m
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  0Ah ;  
-		.db  24h ; $
+		.db  'start your local X/Y/ZModem sending program/r/n/n$'
 text22Ch:
-		.db  73h ; s
-		.db  6Fh ; o
-		.db  72h ; r
-		.db  72h ; r
-		.db  79h ; y
-		.db  2Ch ; ,
-		.db  20h ;  
-		.db  43h ; C
-		.db  50h ; P
-		.db  2Fh ; /
-		.db  4Dh ; M
-		.db  20h ;  
-		.db  33h ; 3
-		.db  20h ;  
-		.db  54h ; T
-		.db  6Fh ; o
-		.db  6Fh ; o
-		.db  6Ch ; l
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  24h ; $
+		.db  'sorry, CP/M 3 Tool/r/n$'
 text241h:
-		.db  75h ; u
-		.db  73h ; s
-		.db  61h ; a
-		.db  67h ; g
-		.db  65h ; e
-		.db  3Ah ; :
-		.db  20h ;  
-		.db  72h ; r
-		.db  7Ah ; z
-		.db  20h ;  
-		.db  5Bh ; [
-		.db  2Dh ; -
-		.db  3Fh ; ?
-		.db  70h ; p
-		.db  62h ; b
-		.db  63h ; c
-		.db  72h ; r
-		.db  78h ; x
-		.db  79h ; y
-		.db  7Ah ; z
-		.db  5Dh ; ]
-		.db  20h ;  
-		.db  5Bh ; [
-		.db  64h ; d
-		.db  75h ; u
-		.db  3Ah ; :
-		.db  66h ; f
-		.db  6Eh ; n
-		.db  5Dh ; ]
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  6Fh ; o
-		.db  70h ; p
-		.db  74h ; t
-		.db  69h ; i
-		.db  6Fh ; o
-		.db  6Eh ; n
-		.db  73h ; s
-		.db  20h ;  
-		.db  66h ; f
-		.db  6Fh ; o
-		.db  72h ; r
-		.db  20h ;  
-		.db  5Ah ; Z
-		.db  4Dh ; M
-		.db  6Fh ; o
-		.db  64h ; d
-		.db  65h ; e
-		.db  6Dh ; m
-		.db  3Ah ; :
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  3Fh ; ?
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  74h ; t
-		.db  68h ; h
-		.db  69h ; i
-		.db  73h ; s
-		.db  20h ;  
-		.db  68h ; h
-		.db  65h ; e
-		.db  6Ch ; l
-		.db  70h ; p
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  70h ; p
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  70h ; p
-		.db  72h ; r
-		.db  6Fh ; o
-		.db  74h ; t
-		.db  65h ; e
-		.db  63h ; c
-		.db  74h ; t
-		.db  20h ;  
-		.db  46h ; F
-		.db  69h ; i
-		.db  6Ch ; l
-		.db  65h ; e
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  62h ; b
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  72h ; r
-		.db  65h ; e
-		.db  63h ; c
-		.db  65h ; e
-		.db  69h ; i
-		.db  76h ; v
-		.db  65h ; e
-		.db  20h ;  
-		.db  62h ; b
-		.db  69h ; i
-		.db  6Eh ; n
-		.db  61h ; a
-		.db  72h ; r
-		.db  79h ; y
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  63h ; c
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  63h ; c
-		.db  6Fh ; o
-		.db  6Eh ; n
-		.db  76h ; v
-		.db  65h ; e
-		.db  72h ; r
-		.db  74h ; t
-		.db  20h ;  
-		.db  74h ; t
-		.db  6Fh ; o
-		.db  20h ;  
-		.db  6Ch ; l
-		.db  6Fh ; o
-		.db  63h ; c
-		.db  61h ; a
-		.db  6Ch ; l
-		.db  20h ;  
-		.db  6Ch ; l
-		.db  69h ; i
-		.db  6Eh ; n
-		.db  65h ; e
-		.db  66h ; f
-		.db  65h ; e
-		.db  65h ; e
-		.db  64h ; d
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  72h ; r
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  72h ; r
-		.db  65h ; e
-		.db  73h ; s
-		.db  75h ; u
-		.db  6Dh ; m
-		.db  65h ; e
-		.db  20h ;  
-		.db  74h ; t
-		.db  72h ; r
-		.db  61h ; a
-		.db  6Eh ; n
-		.db  73h ; s
-		.db  6Dh ; m
-		.db  69h ; i
-		.db  73h ; s
-		.db  73h ; s
-		.db  69h ; i
-		.db  6Fh ; o
-		.db  6Eh ; n
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  78h ; x
-		.db  2Ch ; ,
-		.db  79h ; y
-		.db  2Ch ; ,
-		.db  7Ah ; z
-		.db  20h ;  
-		.db  50h ; P
-		.db  72h ; r
-		.db  6Fh ; o
-		.db  74h ; t
-		.db  6Fh ; o
-		.db  6Bh ; k
-		.db  6Fh ; o
-		.db  6Ch ; l
-		.db  6Ch ; l
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  64h ; d
-		.db  75h ; u
-		.db  3Ah ; :
-		.db  66h ; f
-		.db  6Eh ; n
-		.db  20h ;  
-		.db  64h ; d
-		.db  65h ; e
-		.db  66h ; f
-		.db  61h ; a
-		.db  75h ; u
-		.db  6Ch ; l
-		.db  74h ; t
-		.db  73h ; s
-		.db  20h ;  
-		.db  74h ; t
-		.db  6Fh ; o
-		.db  20h ;  
-		.db  58h ; X
-		.db  4Dh ; M
-		.db  6Fh ; o
-		.db  64h ; d
-		.db  65h ; e
-		.db  6Dh ; m
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  0Ah ;  
-		.db  74h ; t
-		.db  68h ; h
-		.db  65h ; e
-		.db  73h ; s
-		.db  65h ; e
-		.db  20h ;  
-		.db  76h ; v
-		.db  61h ; a
-		.db  6Ch ; l
-		.db  75h ; u
-		.db  65h ; e
-		.db  73h ; s
-		.db  20h ;  
-		.db  6Fh ; o
-		.db  76h ; v
-		.db  65h ; e
-		.db  72h ; r
-		.db  72h ; r
-		.db  69h ; i
-		.db  64h ; d
-		.db  65h ; e
-		.db  20h ;  
-		.db  6Fh ; o
-		.db  70h ; p
-		.db  74h ; t
-		.db  69h ; i
-		.db  6Fh ; o
-		.db  6Eh ; n
-		.db  73h ; s
-		.db  20h ;  
-		.db  66h ; f
-		.db  72h ; r
-		.db  6Fh ; o
-		.db  6Dh ; m
-		.db  20h ;  
-		.db  73h ; s
-		.db  65h ; e
-		.db  6Eh ; n
-		.db  64h ; d
-		.db  65h ; e
-		.db  72h ; r
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  24h ; $
+		.db  'usage: rz [-?pbcrxyz] [du:fn]/r/n/n'  
+		.db  ' options for ZModem:/r/n'
+		.db  '            ?     this help/r/n'
+		.db  '            p     protect File/r/n'
+		.db  '            b     receive binary/r/n'
+		.db  '            c     convert to local linefeed/r/n'
+		.db  '            r     resume transmission/r/n'
+		.db  '            x,y,z Protokollr/n'
+		.db  '            du:fn defaults to XModem/r/n/n' 
+		.db  'these values override options from sender/r/n$'
 
 ;----------------------------------------------------------------------------
 
@@ -645,30 +210,16 @@ loc_0_3AE:				; CODE XREF: sub_0_39A+5j
 ; End of function sub_0_39A
 
 ;----------------------------------------------------------------------------
-		.db  3Fh ; ?
-		.db  50h ; P
-		.db  42h ; B
-		.db  43h ; C
-		.db  58h ; X
-		.db  59h ; Y
-		.db  5Ah ; Z
-		.db  52h ; R
-		.db 0E9h ; é
-		.db    3 ;  
-		.db 0D1h ; Ñ
-		.db    3 ;  
-		.db 0CDh ; Í
-		.db    3 ;  
-		.db 0C9h ; É
-		.db    3 ;  
-		.db 0E3h ; ã
-		.db    3 ;  
-		.db 0DDh ; Ý
-		.db    3 ;  
-		.db 0D7h ; ×
-		.db    3 ;  
-		.db 0CAh ; Ê
-		.db    1 ;  
+		.db  '?PBCXYZR'
+
+		.dw sub_0_3E9
+		.dw sub_0_3D1
+		.dw sub_0_3CD
+		.dw sub_0_3C9
+		.dw sub_0_3E3
+		.dw sub_0_3DD
+		.dw sub_0_3D7 
+		.dw loc_0_1CA
 
 ;----------------------------------------------------------------------------
 
@@ -677,45 +228,26 @@ loc_0_3AE:				; CODE XREF: sub_0_39A+5j
 sub_0_3C9:				; CODE XREF: start+71p
 		ld	a, 1
 		jr	loc_0_3D3
-;----------------------------------------------------------------------------
-		.db  3Eh ; >
-		.db    3 ;  
-		.db  18h ;  
-		.db    2 ;  
-		.db  3Eh ; >
-		.db    4 ;  
-;----------------------------------------------------------------------------
-
-loc_0_3D3:				; CODE XREF: sub_0_3C9+2j
-		ld	(byte_0_8AF), a
-		ret	
-; End of function sub_0_3C9
+sub_0_3CD:	ld	a,3 
+		jr	loc_0_3D3  
+sub_0_3D1:	ld	a,4  
+loc_0_3D3:	ld	(byte_0_8AF), a
+		ret
 
 ;----------------------------------------------------------------------------
-		.db  3Eh ; >
-		.db 0FFh ; ÿ
-		.db  32h ; 2
-		.db 0B0h ; °
-		.db    8 ;  
-		.db 0C9h ; É
-		.db  3Eh ; >
-		.db 0FFh ; ÿ
-		.db  32h ; 2
-		.db 0B2h ; ²
-		.db    8 ;  
-		.db 0C9h ; É
-		.db  3Eh ; >
-		.db 0FFh ; ÿ
-		.db  32h ; 2
-		.db 0B1h ; ±
-		.db    8 ;  
-		.db 0C9h ; É
-		.db  3Eh ; >
-		.db 0FFh ; ÿ
-		.db  32h ; 2
-		.db 0B3h ; ³
-		.db    8 ;  
-		.db 0C9h ; É
+
+sub_0_3D7:	ld	a,$ff
+		ld	(08B0h)
+		ret
+sub_0_3DD:	ld	a,$ff
+		ld	(08B2h)
+		ret
+sub_0_3E3:	ld	a,$ff
+		ld	(08B1h),a
+		ret
+sub_0_3E9:	ld	a,$ff
+		ld	(08B3h),a
+		ret
 
 ;----------------------------------------------------------------------------
 
@@ -725,9 +257,9 @@ sub_0_3EF:				; CODE XREF: start+7Cp
 		xor	a
 		ld	(byte_0_460), a
 		ld	(byte_0_464), a
-		ld	c, 31h
+		ld	c, S_SYSVAR
 		ld	de, 45Fh
-		call	5		; BDOS function 49 (S_SYSVAR) - Access the system variables
+		call	bdos		; Access the system variables
 		ld	a, h
 		cpl	
 		ld	h, a
@@ -735,9 +267,9 @@ sub_0_3EF:				; CODE XREF: start+7Cp
 		cpl	
 		ld	l, a
 		ld	(word_0_46F), hl
-		ld	c, 31h
+		ld	c, S_SYSVAR
 		ld	de, 463h
-		call	5		; BDOS function 49 (S_SYSVAR) - Access the system variables
+		call	bdos		; Access the system variables
 		ld	(word_0_46B), hl
 		ld	de, (word_0_46F)
 		ld	a, h
@@ -747,9 +279,9 @@ sub_0_3EF:				; CODE XREF: start+7Cp
 		and	e
 		ld	l, a
 		ld	(word_0_465), hl
-		ld	c, 31h
+		ld	c, S_SYSVAR
 		ld	de, 467h
-		call	5		; BDOS function 49 (S_SYSVAR) - Access the system variables
+		call	bdos		; Access the system variables
 		ld	(word_0_46D), hl
 		ld	de, (word_0_46F)
 		ld	a, h
@@ -764,13 +296,13 @@ loc_0_437:				; CODE XREF: sub_0_451+Cj
 		ld	a, 0FEh
 		ld	(byte_0_464), a
 		ld	de, 463h
-		ld	c, 31h
-		call	5		; BDOS function 49 (S_SYSVAR) - Access the system variables
+		ld	c, S_SYSVAR
+		call	bdos		; Access the system variables
 		ld	a, 0FEh
 		ld	(byte_0_468), a
 		ld	de, 467h
-		ld	c, 31h
-		jp	5		; BDOS function 49 - Access the System Control Block
+		ld	c, S_SYSVAR
+		jp	5		; Access the System Control Block
 ; End of function sub_0_3EF
 
 
@@ -812,7 +344,7 @@ word_0_46F:	.dw 0			; DATA XREF: sub_0_3EF+15w
 
 sub_0_471:				; CODE XREF: sub_0_961+92p
 					; seg000:0A29p	...
-		call	5
+		call	bdos
 		or	a
 		ret	
 ; End of function sub_0_471
@@ -848,8 +380,8 @@ sub_0_482:				; CODE XREF: sub_0_1289+122p
 		ld	de, 495h
 		call	sub_0_16E7
 		ld	de, text493h
-		ld	c, 9
-		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		jp	5		; Output string
 ; End of function sub_0_482
 
 ;----------------------------------------------------------------------------
@@ -897,8 +429,8 @@ sub_0_4A4:				; CODE XREF: sub_0_961+82p
 		ld	a, 24h
 		ld	(byte_0_507), a
 		ld	de, text4F2h
-		ld	c, 9
-		call	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		call	bdos		; Output string
 		ld	hl, (2CD4h)
 		ld	a, h
 		or	l
@@ -908,11 +440,11 @@ sub_0_4A4:				; CODE XREF: sub_0_961+82p
 		dec	hl
 		ld	(hl), 24h
 		ld	de, (2CD4h)
-		ld	c, 9
-		call	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		call	bdos		; Output string
 		ld	de, text508h
-		ld	c, 9
-		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		jp	5		; Output string
 ; End of function sub_0_4A4
 
 ;----------------------------------------------------------------------------
@@ -955,8 +487,8 @@ sub_0_50B:				; CODE XREF: sub_0_D0Ep sub_0_D30+30p
 		call	loc_0_774
 		ld	(hl), 24h
 		ld	de, text51Eh
-		ld	c, 9
-		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		jp	5		; Output string
 ; End of function sub_0_50B
 
 ;----------------------------------------------------------------------------
@@ -1020,8 +552,8 @@ text51Eh:
 
 sub_0_552:				; CODE XREF: seg000:0A2Ep
 		ld	de, text55Ah
-		ld	c, 9
-		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		jp	5		; Output string
 ; End of function sub_0_552
 
 ;----------------------------------------------------------------------------
@@ -1091,12 +623,12 @@ sub_0_588:				; CODE XREF: sub_0_588+1Fj
 		ld	de, 1000h
 		sbc	hl, de
 		jr	z, loc_0_5A9
-		ld	c, 7
-		call	5		; BDOS function 7 (A_STATIN) - Auxiliary Input status
+		ld	c, A_STATIN
+		call	bdos		; Auxiliary Input status
 		or	a
 		jr	z, loc_0_5A9
-		ld	c, 3
-		call	5		; BDOS function 3 (A_READ) - Auxiliary (Reader) input
+		ld	c, A_READ
+		call	bdos		; Auxiliary (Reader) input
 		ld	c, a
 		ld	hl, 1808h
 		call	sub_0_61C
@@ -1146,7 +678,7 @@ sub_0_5B4:				; CODE XREF: sub_0_5D4+12p
 
 sub_0_5CD:				; CODE XREF: seg000:1462p
 		ld	c, 8
-		call	5		; BDOS function 8 (A_STATOUT) - Auxiliary Output status
+		call	bdos		; BDOS function 8 (A_STATOUT) - Auxiliary Output status
 		or	a
 		ret	
 ; End of function sub_0_5CD
@@ -2186,10 +1718,10 @@ loc_0_A35:				; CODE XREF: seg000:0A20j
 loc_0_A43:				; CODE XREF: seg000:0A3Aj
 		ld	de, 2811h
 		ld	c, 1Ah
-		call	5		; BDOS function 26 (F_DMAOFF) - Set DMA address
+		call	bdos		; BDOS function 26 (F_DMAOFF) - Set DMA address
 		ld	e, 1
 		ld	c, 2Ch
-		call	5		; BDOS function 44 (F_MULTISEC) - Set number of records to read/write at once
+		call	bdos		; BDOS function 44 (F_MULTISEC) - Set number of records to read/write at once
 		ld	de, 17A3h
 		ld	c, 0Fh
 		call	sub_0_471
@@ -5093,7 +4625,7 @@ sub_0_1687:				; CODE XREF: sub_0_14A7+8p
 		call	sub_0_16AF
 		push	af
 		ld	e, 0FFh
-		ld	c, 20h
+		ld	c, F_USERNUM
 		call	sub_0_16AF
 		ld	c, a
 		pop	af
@@ -5145,7 +4677,7 @@ sub_0_16AF:				; CODE XREF: sub_0_1687+5p
 					; sub_0_1687+Dp
 		push	de
 		push	bc
-		call	5
+		call	bdos
 		pop	bc
 		pop	de
 		or	a
@@ -5163,7 +4695,7 @@ sub_0_16B8:				; CODE XREF: sub_0_169E+2p
 		push	de
 		push	bc
 		ld	c, a
-		call	5
+		call	bdos
 		or	a
 		pop	bc
 		pop	de
