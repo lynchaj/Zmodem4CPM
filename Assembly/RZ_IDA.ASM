@@ -161,462 +161,23 @@ loc_0_1CA:				; CODE XREF: start+32j
 		jp	0
 ;----------------------------------------------------------------------------
 text1D5h:
-		.db  52h ; R
-		.db  5Ah ; Z
-		.db  20h ;  
-		.db  66h ; f
-		.db  6Fh ; o
-		.db  72h ; r
-		.db  20h ;  
-		.db  43h ; C
-		.db  50h ; P
-		.db  2Fh ; /
-		.db  4Dh ; M
-		.db  20h ;  
-		.db  33h ; 3
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  56h ; V
-		.db  20h ;  
-		.db  31h ; 1
-		.db  2Eh ; .
-		.db  30h ; 0
-		.db  34h ; 4
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  28h ; (
-		.db  43h ; C
-		.db  29h ; )
-		.db  20h ;  
-		.db  39h ; 9
-		.db  32h ; 2
-		.db  20h ;  
-		.db  77h ; w
-		.db  73h ; s
-		.db  68h ; h
-		.db  62h ; b
-		.db  67h ; g
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  0Ah ;  
-		.db  24h ; $
+		.db  'RZ for CP/M 3   V1.04/r/n'
+		.db  '(C) 92 wshbg/r/n/n$'
 text1FDh:		
-		.db  73h ; s
-		.db  74h ; t
-		.db  61h ; a
-		.db  72h ; r
-		.db  74h ; t
-		.db  20h ;  
-		.db  79h ; y
-		.db  6Fh ; o
-		.db  75h ; u
-		.db  72h ; r
-		.db  20h ;  
-		.db  6Ch ; l
-		.db  6Fh ; o
-		.db  63h ; c
-		.db  61h ; a
-		.db  6Ch ; l
-		.db  20h ;  
-		.db  58h ; X
-		.db  2Fh ; /
-		.db  59h ; Y
-		.db  2Fh ; /
-		.db  5Ah ; Z
-		.db  4Dh ; M
-		.db  6Fh ; o
-		.db  64h ; d
-		.db  65h ; e
-		.db  6Dh ; m
-		.db  20h ;  
-		.db  73h ; s
-		.db  65h ; e
-		.db  6Eh ; n
-		.db  64h ; d
-		.db  69h ; i
-		.db  6Eh ; n
-		.db  67h ; g
-		.db  20h ;  
-		.db  70h ; p
-		.db  72h ; r
-		.db  6Fh ; o
-		.db  67h ; g
-		.db  72h ; r
-		.db  61h ; a
-		.db  6Dh ; m
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  0Ah ;  
-		.db  24h ; $
+		.db  'start your local X/Y/ZModem sending program/r/n/n$'
 text22Ch:
-		.db  73h ; s
-		.db  6Fh ; o
-		.db  72h ; r
-		.db  72h ; r
-		.db  79h ; y
-		.db  2Ch ; ,
-		.db  20h ;  
-		.db  43h ; C
-		.db  50h ; P
-		.db  2Fh ; /
-		.db  4Dh ; M
-		.db  20h ;  
-		.db  33h ; 3
-		.db  20h ;  
-		.db  54h ; T
-		.db  6Fh ; o
-		.db  6Fh ; o
-		.db  6Ch ; l
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  24h ; $
+		.db  'sorry, CP/M 3 Tool/r/n$'
 text241h:
-		.db  75h ; u
-		.db  73h ; s
-		.db  61h ; a
-		.db  67h ; g
-		.db  65h ; e
-		.db  3Ah ; :
-		.db  20h ;  
-		.db  72h ; r
-		.db  7Ah ; z
-		.db  20h ;  
-		.db  5Bh ; [
-		.db  2Dh ; -
-		.db  3Fh ; ?
-		.db  70h ; p
-		.db  62h ; b
-		.db  63h ; c
-		.db  72h ; r
-		.db  78h ; x
-		.db  79h ; y
-		.db  7Ah ; z
-		.db  5Dh ; ]
-		.db  20h ;  
-		.db  5Bh ; [
-		.db  64h ; d
-		.db  75h ; u
-		.db  3Ah ; :
-		.db  66h ; f
-		.db  6Eh ; n
-		.db  5Dh ; ]
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  6Fh ; o
-		.db  70h ; p
-		.db  74h ; t
-		.db  69h ; i
-		.db  6Fh ; o
-		.db  6Eh ; n
-		.db  73h ; s
-		.db  20h ;  
-		.db  66h ; f
-		.db  6Fh ; o
-		.db  72h ; r
-		.db  20h ;  
-		.db  5Ah ; Z
-		.db  4Dh ; M
-		.db  6Fh ; o
-		.db  64h ; d
-		.db  65h ; e
-		.db  6Dh ; m
-		.db  3Ah ; :
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  3Fh ; ?
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  74h ; t
-		.db  68h ; h
-		.db  69h ; i
-		.db  73h ; s
-		.db  20h ;  
-		.db  68h ; h
-		.db  65h ; e
-		.db  6Ch ; l
-		.db  70h ; p
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  70h ; p
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  70h ; p
-		.db  72h ; r
-		.db  6Fh ; o
-		.db  74h ; t
-		.db  65h ; e
-		.db  63h ; c
-		.db  74h ; t
-		.db  20h ;  
-		.db  46h ; F
-		.db  69h ; i
-		.db  6Ch ; l
-		.db  65h ; e
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  62h ; b
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  72h ; r
-		.db  65h ; e
-		.db  63h ; c
-		.db  65h ; e
-		.db  69h ; i
-		.db  76h ; v
-		.db  65h ; e
-		.db  20h ;  
-		.db  62h ; b
-		.db  69h ; i
-		.db  6Eh ; n
-		.db  61h ; a
-		.db  72h ; r
-		.db  79h ; y
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  63h ; c
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  63h ; c
-		.db  6Fh ; o
-		.db  6Eh ; n
-		.db  76h ; v
-		.db  65h ; e
-		.db  72h ; r
-		.db  74h ; t
-		.db  20h ;  
-		.db  74h ; t
-		.db  6Fh ; o
-		.db  20h ;  
-		.db  6Ch ; l
-		.db  6Fh ; o
-		.db  63h ; c
-		.db  61h ; a
-		.db  6Ch ; l
-		.db  20h ;  
-		.db  6Ch ; l
-		.db  69h ; i
-		.db  6Eh ; n
-		.db  65h ; e
-		.db  66h ; f
-		.db  65h ; e
-		.db  65h ; e
-		.db  64h ; d
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  72h ; r
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  72h ; r
-		.db  65h ; e
-		.db  73h ; s
-		.db  75h ; u
-		.db  6Dh ; m
-		.db  65h ; e
-		.db  20h ;  
-		.db  74h ; t
-		.db  72h ; r
-		.db  61h ; a
-		.db  6Eh ; n
-		.db  73h ; s
-		.db  6Dh ; m
-		.db  69h ; i
-		.db  73h ; s
-		.db  73h ; s
-		.db  69h ; i
-		.db  6Fh ; o
-		.db  6Eh ; n
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  78h ; x
-		.db  2Ch ; ,
-		.db  79h ; y
-		.db  2Ch ; ,
-		.db  7Ah ; z
-		.db  20h ;  
-		.db  50h ; P
-		.db  72h ; r
-		.db  6Fh ; o
-		.db  74h ; t
-		.db  6Fh ; o
-		.db  6Bh ; k
-		.db  6Fh ; o
-		.db  6Ch ; l
-		.db  6Ch ; l
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  20h ;  
-		.db  64h ; d
-		.db  75h ; u
-		.db  3Ah ; :
-		.db  66h ; f
-		.db  6Eh ; n
-		.db  20h ;  
-		.db  64h ; d
-		.db  65h ; e
-		.db  66h ; f
-		.db  61h ; a
-		.db  75h ; u
-		.db  6Ch ; l
-		.db  74h ; t
-		.db  73h ; s
-		.db  20h ;  
-		.db  74h ; t
-		.db  6Fh ; o
-		.db  20h ;  
-		.db  58h ; X
-		.db  4Dh ; M
-		.db  6Fh ; o
-		.db  64h ; d
-		.db  65h ; e
-		.db  6Dh ; m
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  0Ah ;  
-		.db  74h ; t
-		.db  68h ; h
-		.db  65h ; e
-		.db  73h ; s
-		.db  65h ; e
-		.db  20h ;  
-		.db  76h ; v
-		.db  61h ; a
-		.db  6Ch ; l
-		.db  75h ; u
-		.db  65h ; e
-		.db  73h ; s
-		.db  20h ;  
-		.db  6Fh ; o
-		.db  76h ; v
-		.db  65h ; e
-		.db  72h ; r
-		.db  72h ; r
-		.db  69h ; i
-		.db  64h ; d
-		.db  65h ; e
-		.db  20h ;  
-		.db  6Fh ; o
-		.db  70h ; p
-		.db  74h ; t
-		.db  69h ; i
-		.db  6Fh ; o
-		.db  6Eh ; n
-		.db  73h ; s
-		.db  20h ;  
-		.db  66h ; f
-		.db  72h ; r
-		.db  6Fh ; o
-		.db  6Dh ; m
-		.db  20h ;  
-		.db  73h ; s
-		.db  65h ; e
-		.db  6Eh ; n
-		.db  64h ; d
-		.db  65h ; e
-		.db  72h ; r
-		.db  0Dh ;  
-		.db  0Ah ;  
-		.db  24h ; $
+		.db  'usage: rz [-?pbcrxyz] [du:fn]/r/n/n'  
+		.db  ' options for ZModem:/r/n'
+		.db  '            ?     this help/r/n'
+		.db  '            p     protect File/r/n'
+		.db  '            b     receive binary/r/n'
+		.db  '            c     convert to local linefeed/r/n'
+		.db  '            r     resume transmission/r/n'
+		.db  '            x,y,z Protokollr/n'
+		.db  '            du:fn defaults to XModem/r/n/n' 
+		.db  'these values override options from sender/r/n$'
 
 ;----------------------------------------------------------------------------
 
@@ -645,30 +206,16 @@ loc_0_3AE:				; CODE XREF: sub_0_39A+5j
 ; End of function sub_0_39A
 
 ;----------------------------------------------------------------------------
-		.db  3Fh ; ?
-		.db  50h ; P
-		.db  42h ; B
-		.db  43h ; C
-		.db  58h ; X
-		.db  59h ; Y
-		.db  5Ah ; Z
-		.db  52h ; R
-		.db 0E9h ; é
-		.db    3 ;  
-		.db 0D1h ; Ñ
-		.db    3 ;  
-		.db 0CDh ; Í
-		.db    3 ;  
-		.db 0C9h ; É
-		.db    3 ;  
-		.db 0E3h ; ã
-		.db    3 ;  
-		.db 0DDh ; Ý
-		.db    3 ;  
-		.db 0D7h ; ×
-		.db    3 ;  
-		.db 0CAh ; Ê
-		.db    1 ;  
+		.db  '?PBCXYZR'
+
+		.dw sub_0_3E9
+		.dw sub_0_3D1
+		.dw sub_0_3CD
+		.dw sub_0_3C9
+		.dw sub_0_3E3
+		.dw sub_0_3DD
+		.dw sub_0_3D7 
+		.dw loc_0_1CA
 
 ;----------------------------------------------------------------------------
 
@@ -677,45 +224,26 @@ loc_0_3AE:				; CODE XREF: sub_0_39A+5j
 sub_0_3C9:				; CODE XREF: start+71p
 		ld	a, 1
 		jr	loc_0_3D3
-;----------------------------------------------------------------------------
-		.db  3Eh ; >
-		.db    3 ;  
-		.db  18h ;  
-		.db    2 ;  
-		.db  3Eh ; >
-		.db    4 ;  
-;----------------------------------------------------------------------------
-
-loc_0_3D3:				; CODE XREF: sub_0_3C9+2j
-		ld	(byte_0_8AF), a
-		ret	
-; End of function sub_0_3C9
+sub_0_3CD:	ld	a,3 
+		jr	loc_0_3D3  
+sub_0_3D1:	ld	a,4  
+loc_0_3D3:	ld	(byte_0_8AF), a
+		ret
 
 ;----------------------------------------------------------------------------
-		.db  3Eh ; >
-		.db 0FFh ; ÿ
-		.db  32h ; 2
-		.db 0B0h ; °
-		.db    8 ;  
-		.db 0C9h ; É
-		.db  3Eh ; >
-		.db 0FFh ; ÿ
-		.db  32h ; 2
-		.db 0B2h ; ²
-		.db    8 ;  
-		.db 0C9h ; É
-		.db  3Eh ; >
-		.db 0FFh ; ÿ
-		.db  32h ; 2
-		.db 0B1h ; ±
-		.db    8 ;  
-		.db 0C9h ; É
-		.db  3Eh ; >
-		.db 0FFh ; ÿ
-		.db  32h ; 2
-		.db 0B3h ; ³
-		.db    8 ;  
-		.db 0C9h ; É
+
+sub_0_3D7:	ld	a,$ff
+		ld	(08B0h)
+		ret
+sub_0_3DD:	ld	a,$ff
+		ld	(08B2h)
+		ret
+sub_0_3E3:	ld	a,$ff
+		ld	(08B1h),a
+		ret
+sub_0_3E9:	ld	a,$ff
+		ld	(08B3h),a
+		ret
 
 ;----------------------------------------------------------------------------
 
