@@ -14,24 +14,28 @@
 ; Processor:	    z80
 ; Target assembler: Table Driven Assembler (TASM) by Speech Technology Inc.
 
+bdos		.equ	0005h
+
+A_READ		.equ	3
+A_STATIN	.equ	7
+C_WRITESTR	.equ	9
+S_BDOSVER	.equ	12
+DRV_SET		.equ	14
+F_USERNUM	.equ	32
+S_SYSVAR	.equ	49
+	
 ;----------------------------------------------------------------------------
 
-		.org 100h
+		.org	100h
 
-
-;----------------------------------------------------------------------------
-
-;		S u b r	o u t i	n e
-
-start:
-		ld	sp, 1808h
-		ld	c, 0Ch
-		call	5		; BDOS function 12 (S_BDOSVER) - Return version number
+start:		ld	sp, 1808h
+		ld	c, S_BDOSVER
+		call	bdos		; Return version number
 		cp	30h
 		jp	c, loc_0_1C2
 		ld	de, text1D5h
-		ld	c, 9
-		call	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		call	bdos		; Output string
 		call	sub_0_195
 		ld	hl, (word_0_179E)
 		xor	a
@@ -90,8 +94,8 @@ loc_0_164:				; CODE XREF: start+5Ej
 loc_0_174:				; CODE XREF: start+25j	start+3Bj
 					; ...
 		ld	de, text1FDh
-		ld	c, 9
-		call	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		call	bdos		; Output string
 		call	sub_0_3EF
 		call	sub_0_8D1
 		call	sub_0_451
@@ -138,26 +142,26 @@ sub_0_1B0:				; CODE XREF: start+6Ep	start+8Fp
 		dec	de
 		ld	a, (de)
 		ld	e, a
-		ld	c, 20h
-		call	5		; BDOS function 32 (F_USERNUM) - get/set user number
+		ld	c, F_USERNUM
+		call	bdos		; get/set user number
 		pop	af
 		dec	a
 		ld	e, a
-		ld	c, 0Eh
-		jp	5		; BDOS function 14 (DRV_SET) - Select disc
+		ld	c, DRV_SET
+		jp	5		; Select disc
 ; End of function sub_0_1B0
 
 ;----------------------------------------------------------------------------
 
 loc_0_1C2:				; CODE XREF: start+Aj
 		ld	de, text22Ch
-		ld	c, 9
-		call	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		call	bdos		; Output string
 
 loc_0_1CA:				; CODE XREF: start+32j
 		ld	de, text241h
-		ld	c, 9
-		call	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		call	bdos		; Output string
 		jp	0
 ;----------------------------------------------------------------------------
 text1D5h:
@@ -253,9 +257,9 @@ sub_0_3EF:				; CODE XREF: start+7Cp
 		xor	a
 		ld	(byte_0_460), a
 		ld	(byte_0_464), a
-		ld	c, 31h
+		ld	c, S_SYSVAR
 		ld	de, 45Fh
-		call	5		; BDOS function 49 (S_SYSVAR) - Access the system variables
+		call	bdos		; Access the system variables
 		ld	a, h
 		cpl	
 		ld	h, a
@@ -263,9 +267,9 @@ sub_0_3EF:				; CODE XREF: start+7Cp
 		cpl	
 		ld	l, a
 		ld	(word_0_46F), hl
-		ld	c, 31h
+		ld	c, S_SYSVAR
 		ld	de, 463h
-		call	5		; BDOS function 49 (S_SYSVAR) - Access the system variables
+		call	bdos		; Access the system variables
 		ld	(word_0_46B), hl
 		ld	de, (word_0_46F)
 		ld	a, h
@@ -275,9 +279,9 @@ sub_0_3EF:				; CODE XREF: start+7Cp
 		and	e
 		ld	l, a
 		ld	(word_0_465), hl
-		ld	c, 31h
+		ld	c, S_SYSVAR
 		ld	de, 467h
-		call	5		; BDOS function 49 (S_SYSVAR) - Access the system variables
+		call	bdos		; Access the system variables
 		ld	(word_0_46D), hl
 		ld	de, (word_0_46F)
 		ld	a, h
@@ -292,13 +296,13 @@ loc_0_437:				; CODE XREF: sub_0_451+Cj
 		ld	a, 0FEh
 		ld	(byte_0_464), a
 		ld	de, 463h
-		ld	c, 31h
-		call	5		; BDOS function 49 (S_SYSVAR) - Access the system variables
+		ld	c, S_SYSVAR
+		call	bdos		; Access the system variables
 		ld	a, 0FEh
 		ld	(byte_0_468), a
 		ld	de, 467h
-		ld	c, 31h
-		jp	5		; BDOS function 49 - Access the System Control Block
+		ld	c, S_SYSVAR
+		jp	5		; Access the System Control Block
 ; End of function sub_0_3EF
 
 
@@ -340,7 +344,7 @@ word_0_46F:	.dw 0			; DATA XREF: sub_0_3EF+15w
 
 sub_0_471:				; CODE XREF: sub_0_961+92p
 					; seg000:0A29p	...
-		call	5
+		call	bdos
 		or	a
 		ret	
 ; End of function sub_0_471
@@ -376,8 +380,8 @@ sub_0_482:				; CODE XREF: sub_0_1289+122p
 		ld	de, 495h
 		call	sub_0_16E7
 		ld	de, text493h
-		ld	c, 9
-		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		jp	5		; Output string
 ; End of function sub_0_482
 
 ;----------------------------------------------------------------------------
@@ -425,8 +429,8 @@ sub_0_4A4:				; CODE XREF: sub_0_961+82p
 		ld	a, 24h
 		ld	(byte_0_507), a
 		ld	de, text4F2h
-		ld	c, 9
-		call	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		call	bdos		; Output string
 		ld	hl, (2CD4h)
 		ld	a, h
 		or	l
@@ -436,11 +440,11 @@ sub_0_4A4:				; CODE XREF: sub_0_961+82p
 		dec	hl
 		ld	(hl), 24h
 		ld	de, (2CD4h)
-		ld	c, 9
-		call	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		call	bdos		; Output string
 		ld	de, text508h
-		ld	c, 9
-		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		jp	5		; Output string
 ; End of function sub_0_4A4
 
 ;----------------------------------------------------------------------------
@@ -483,8 +487,8 @@ sub_0_50B:				; CODE XREF: sub_0_D0Ep sub_0_D30+30p
 		call	loc_0_774
 		ld	(hl), 24h
 		ld	de, text51Eh
-		ld	c, 9
-		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		jp	5		; Output string
 ; End of function sub_0_50B
 
 ;----------------------------------------------------------------------------
@@ -548,8 +552,8 @@ text51Eh:
 
 sub_0_552:				; CODE XREF: seg000:0A2Ep
 		ld	de, text55Ah
-		ld	c, 9
-		jp	5		; BDOS function 9 (C_WRITESTR) - Output string
+		ld	c, C_WRITESTR
+		jp	5		; Output string
 ; End of function sub_0_552
 
 ;----------------------------------------------------------------------------
@@ -619,12 +623,12 @@ sub_0_588:				; CODE XREF: sub_0_588+1Fj
 		ld	de, 1000h
 		sbc	hl, de
 		jr	z, loc_0_5A9
-		ld	c, 7
-		call	5		; BDOS function 7 (A_STATIN) - Auxiliary Input status
+		ld	c, A_STATIN
+		call	bdos		; Auxiliary Input status
 		or	a
 		jr	z, loc_0_5A9
-		ld	c, 3
-		call	5		; BDOS function 3 (A_READ) - Auxiliary (Reader) input
+		ld	c, A_READ
+		call	bdos		; Auxiliary (Reader) input
 		ld	c, a
 		ld	hl, 1808h
 		call	sub_0_61C
@@ -674,7 +678,7 @@ sub_0_5B4:				; CODE XREF: sub_0_5D4+12p
 
 sub_0_5CD:				; CODE XREF: seg000:1462p
 		ld	c, 8
-		call	5		; BDOS function 8 (A_STATOUT) - Auxiliary Output status
+		call	bdos		; BDOS function 8 (A_STATOUT) - Auxiliary Output status
 		or	a
 		ret	
 ; End of function sub_0_5CD
@@ -1714,10 +1718,10 @@ loc_0_A35:				; CODE XREF: seg000:0A20j
 loc_0_A43:				; CODE XREF: seg000:0A3Aj
 		ld	de, 2811h
 		ld	c, 1Ah
-		call	5		; BDOS function 26 (F_DMAOFF) - Set DMA address
+		call	bdos		; BDOS function 26 (F_DMAOFF) - Set DMA address
 		ld	e, 1
 		ld	c, 2Ch
-		call	5		; BDOS function 44 (F_MULTISEC) - Set number of records to read/write at once
+		call	bdos		; BDOS function 44 (F_MULTISEC) - Set number of records to read/write at once
 		ld	de, 17A3h
 		ld	c, 0Fh
 		call	sub_0_471
@@ -4621,7 +4625,7 @@ sub_0_1687:				; CODE XREF: sub_0_14A7+8p
 		call	sub_0_16AF
 		push	af
 		ld	e, 0FFh
-		ld	c, 20h
+		ld	c, F_USERNUM
 		call	sub_0_16AF
 		ld	c, a
 		pop	af
@@ -4673,7 +4677,7 @@ sub_0_16AF:				; CODE XREF: sub_0_1687+5p
 					; sub_0_1687+Dp
 		push	de
 		push	bc
-		call	5
+		call	bdos
 		pop	bc
 		pop	de
 		or	a
@@ -4691,7 +4695,7 @@ sub_0_16B8:				; CODE XREF: sub_0_169E+2p
 		push	de
 		push	bc
 		ld	c, a
-		call	5
+		call	bdos
 		or	a
 		pop	bc
 		pop	de
